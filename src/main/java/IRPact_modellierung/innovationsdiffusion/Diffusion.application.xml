@@ -1,0 +1,132 @@
+<!-- <H3>Gaslieferungen</H3> Simuliert Haushalte, deren Gasfüllstand abnimmt, und die daraufhin LieferAgenten ansprechen und Nachlieferungen erhalten. -->
+
+<applicationtype xmlns="http://www.activecomponents.org/jadex-application" xmlns:env="http://www.activecomponents.org/jadex-envspace"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.activecomponents.org/jadex-application 
+	                    http://www.activecomponents.org/jadex-application-${jadex_build_version}.xsd
+	                    http://www.activecomponents.org/jadex-envspace 
+	                    http://www.activecomponents.org/jadex-envspace-${jadex_build_version}.xsd"
+	name="Diffusion" package="irpact.innovationsdiffusion">
+
+	<imports>
+		<import>jadex.extension.envsupport.environment.space2d.action.*</import>
+		<import>jadex.extension.envsupport.environment.space2d.*</import>
+		<import>jadex.extension.envsupport.environment.*</import>
+		<import>jadex.extension.envsupport.math.*</import>
+		<import>jadex.extension.envsupport.dataview.*</import>
+		<import>jadex.extension.envsupport.observer.perspective.*</import>
+		<import>jadex.bdi.planlib.*</import>
+		<import>jadex.extension.envsupport.evaluation.*</import>
+		<import>jadex.commons.*</import>
+		<import>jadex.commons.future.*</import>
+		<import>jadex.extension.envsupport.observer.gui.plugin.*</import>
+		<import>java.awt.*</import>
+	</imports>
+
+	<extensiontypes>
+		<!-- define space type -->
+		<env:envspacetype name="gc2dspace" width="20" height="20" class="ContinuousSpace2D"> <!-- see https://www.activecomponents.org/bin/view/Env+User+Guide/03+Domain+Model for env:envspacetype -->
+			<env:objecttypes> <!-- part of domain -->
+				<env:objecttype name="ProsumerAvatar">
+					<env:property name="gekauft">false</env:property>
+				</env:objecttype>
+				<env:objecttype name="HedonistAvatar">
+					<env:property name="gekauft">false</env:property>
+				</env:objecttype>
+				<env:objecttype name="MainstreamAvatar">
+					<env:property name="gekauft">false</env:property>
+				</env:objecttype>
+				<env:objecttype name="PostmaterialistAvatar">
+					<env:property name="gekauft">false</env:property>
+				</env:objecttype>
+				<env:objecttype name="SocialLeaderAvatar">
+					<env:property name="gekauft">false</env:property>
+				</env:objecttype>
+				<env:objecttype name="TraditionalistAvatar">
+					<env:property name="gekauft">false</env:property>
+				</env:objecttype>
+			</env:objecttypes>
+
+			<env:dataviews> <!-- part of domain -->
+				<env:dataview name="view_all" class="GeneralDataView2D" /> <!-- general: all objects contained in space -->
+			</env:dataviews>
+
+			<env:avatarmappings> <!-- part of interaction -->
+				<env:avatarmapping componenttype="ProsumerAgent" objecttype="ProsumerAvatar" /> <!-- mapping of agent and avatar -->
+				<env:avatarmapping componenttype="Hedonist" objecttype="HedonistAvatar" /> <!-- mapping of agent and avatar -->
+				<env:avatarmapping componenttype="Mainstream" objecttype="MainstreamAvatar" /> <!-- mapping of agent and avatar -->
+				<env:avatarmapping componenttype="Postmaterialist" objecttype="PostmaterialistAvatar" /> <!-- mapping of agent and avatar -->
+				<env:avatarmapping componenttype="SocialLeader" objecttype="SocialLeaderAvatar" /> <!-- mapping of agent and avatar -->
+				<env:avatarmapping componenttype="Traditionalist" objecttype="TraditionalistAvatar" /> <!-- mapping of agent and avatar -->
+			</env:avatarmappings>
+
+			<env:perspectives> <!-- part of observer -->
+				<env:perspective name="abstract" class="Perspective2D" objectplacement="center">
+					<env:drawable objecttype="ProsumerAvatar" width="1.0" height="1.0"> <!-- visual counter part of space object type -->
+						<env:property name="color" dynamic="true">new Color($object.gekauft ? 0 : 255, $object.gekauft ? 255 : 0, $object.gekauft ? 0 : 0)</env:property>
+						<env:rectangle color="color" width="0.8" height="0.8" />
+					</env:drawable>
+					<env:drawable objecttype="HedonistAvatar" width="1.0" height="1.0"> <!-- visual counter part of space object type -->
+						<env:property name="color" dynamic="true">new Color($object.gekauft ? 0 : 255, $object.gekauft ? 255 : 0, 0)</env:property>
+						<env:rectangle color="color" width="0.8" height="0.8" />
+					</env:drawable>
+					<env:drawable objecttype="MainstreamAvatar" width="1.0" height="1.0"> <!-- visual counter part of space object type -->
+						<env:property name="color" dynamic="true">new Color($object.gekauft ? 0 : 255, $object.gekauft ? 255 : 0, 0)</env:property>
+						<env:rectangle color="color" width="0.8" height="0.8" />
+					</env:drawable>
+					<env:drawable objecttype="PostmaterialistAvatar" width="1.0" height="1.0"> <!-- visual counter part of space object type -->
+						<env:property name="color" dynamic="true">new Color($object.gekauft ? 0 : 255, $object.gekauft ? 255 : 0, 0)</env:property>
+						<env:rectangle color="color" width="0.8" height="0.8" />
+					</env:drawable>
+					<env:drawable objecttype="SocialLeaderAvatar" width="1.0" height="1.0"> <!-- visual counter part of space object type -->
+						<env:property name="color" dynamic="true">new Color($object.gekauft ? 0 : 255, $object.gekauft ? 255 : 0, 0)</env:property>
+						<env:rectangle color="color" width="0.8" height="0.8" />
+					</env:drawable>
+					<env:drawable objecttype="TraditionalistAvatar" width="1.0" height="1.0"> <!-- visual counter part of space object type -->
+						<env:property name="color" dynamic="true">new Color($object.gekauft ? 0 : 255, $object.gekauft ? 255 : 0, 0)</env:property>
+						<env:rectangle color="color" width="0.8" height="0.8" />
+					</env:drawable>
+					<env:prelayers> <!-- display graphical background element; painted before drawables & postlayers -->
+						<env:colorlayer color="black" />
+					</env:prelayers>
+				</env:perspective>
+			</env:perspectives>
+
+			<env:spaceexecutor class="RoundBasedExecutor">
+				<env:property name="space">$space</env:property>
+			</env:spaceexecutor>
+		</env:envspacetype>
+	</extensiontypes>
+
+	<componenttypes>
+		<!-- microagent <componenttype name="ProsumerAgent" filename="consumerAgents/ProsumerAgent.class" />
+		<componenttype name="ProsumerAgent" filename="innovationsdiffusion/consumerAgents/ProsumerAgent.class" />
+		 <componenttype name="ProsumerAgent" filename="target/classes/irpact/consumerAgents/ProsumerAgent.class" />
+		<componenttype name="ProsumerAgent" filename="ProsumerAgent" /> -->
+		<componenttype name="ProsumerAgent" filename="irpact/consumerAgents/ProsumerAgent.class" />
+	<!--	<componenttype name="Hedonist" filename="de/masimba/innovationsdiffusion/agenten/Hedonist.class" />
+		<componenttype name="Mainstream" filename="de/masimba/innovationsdiffusion/agenten/Mainstream.class" />
+		<componenttype name="Postmaterialist" filename="de/masimba/innovationsdiffusion/agenten/Postmaterialist.class" />
+		<componenttype name="SocialLeader" filename="de/masimba/innovationsdiffusion/agenten/SocialLeader.class" />
+		<componenttype name="Traditionalist" filename="de/masimba/innovationsdiffusion/agenten/Traditionalist.class" /> -->
+		<componenttype name="Hedonist" filename="irpact/consumerAgents/subSinusMilieuConsumer/Hedonist.class" />
+		<componenttype name="Mainstream" filename="irpact/consumerAgents/subSinusMilieuConsumer/Mainstream.class" />
+		<componenttype name="Postmaterialist" filename="irpact/consumerAgents/subSinusMilieuConsumer/Postmaterialist.class" />
+		<componenttype name="SocialLeader" filename="irpact/consumerAgents/subSinusMilieuConsumer/SocialLeader.class" />
+		<componenttype name="Traditionalist" filename="irpact/consumerAgents/subSinusMilieuConsumer/Traditionalist.class" />
+	</componenttypes>
+
+	<configurations>
+		<configuration name="default">
+			<extensions>
+				<!-- specified gc2dspace in env space type -->
+				<env:envspace name="mygc2dspace" type="gc2dspace" width="25" height="25">
+					<env:observers>
+						<env:observer name="world" dataview="view_all" perspective="main" />
+					</env:observers>
+				</env:envspace>
+			</extensions>
+		</configuration>
+		
+	</configurations>
+</applicationtype>

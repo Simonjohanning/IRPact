@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="info">
+	<Appenders>
+		<Console name="Console" target="SYSTEM_OUT">
+			<PatternLayout
+				pattern="%d{HH:mm:ss.SSS} [%t] %-5level %logger{36}:%line -  %msg%n" />
+		</Console>
+		<Console name="debugConsoleLogger" target="SYSTEM_OUT">
+			<PatternLayout
+					pattern="%d{HH:mm:ss.SSS} [%t] %-5level %logger{36}:%line %M -  %msg%n \n" />
+		</Console>
+		<Console name="initializationConsoleLogger" target="SYSTEM_OUT">
+			<PatternLayout
+					pattern="%d{HH:mm:ss.SSS} [%t] %-5level %logger{36}:%line %M -  %msg%n \n" />
+		</Console>
+		<File name="prosumerFileLogger" fileName="logs/prosumerLog.log">
+			<PatternLayout
+					pattern="%d{HH:mm:ss.SSS} [%t] %-5level %logger{36}:%line -  %msg%n" />
+		</File>
+		<File name="agentFileLogger" fileName="logs/agentLog.log">
+			<PatternLayout
+					pattern="%d{HH:mm:ss.SSS} [%t] %-5level %logger{36}:%line -  %msg%n" />
+		</File>
+		<File name="initializationLogger" fileName="logs/initializationLog.log">
+			<PatternLayout
+					pattern="%d{HH:mm:ss.SSS} [%t] %-5level %logger{36}:%line -  %msg%n" />
+		</File>
+		<File name="socialNetworkFileLogger" fileName="logs/socialNetworkLog.log">
+			<PatternLayout
+					pattern="%d{HH:mm:ss.SSS} [%t] %-5level %logger{36}:%line -  %msg%n" />
+		</File>
+	</Appenders>
+	<Loggers>
+		<Logger name="prosumerLogger" level="info" additivity="false">
+			<AppenderRef ref="prosumerFileLogger"/>
+		</Logger>
+		<Logger name="agentLogger" level="info" additivity="false">
+			<AppenderRef ref="agentFileLogger"/>
+		</Logger>
+		<Logger name="initLogger" level="debug" additivity="false">
+			<AppenderRef ref="initializationLogger"/>
+		</Logger>
+		<Logger name="initConsoleLogger" level="debug" additivity="false">
+			<AppenderRef ref="initializationConsoleLogger"/>
+		</Logger>
+		<Logger name="debugLogger" level="info" additivity="false">
+			<AppenderRef ref="debugConsoleLogger"/>
+		</Logger>
+		<Logger name="socialNetworkLogger" level="info" additivity="false">
+			<AppenderRef ref="socialNetworkFileLogger"/>
+		</Logger>
+		<Root level="info">
+			<AppenderRef ref="Console" />
+		</Root>
+	</Loggers>
+</Configuration>
