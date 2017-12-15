@@ -34,7 +34,7 @@ public class POSAgentFactory {
 			productAvailability.put(product, true);
 			productPriceFactor.put(product, 1.0);
 		}
-		return new POSAgent(simulationContainer, new Point2D.Double(0.0, 0.0), 1.0, productAvailability, productPriceFactor);
+		return new POSAgent(simulationContainer, new Point2D.Double(0.0, 0.0), 1.0, productAvailability, productPriceFactor, "TrivialPurchaseProcess");
 	}
 
 	/**
@@ -57,7 +57,7 @@ public class POSAgentFactory {
 				productAvailability.put(product, ValueConversionHelper.signToBoolean(agentConfiguration.getProductGroupAvailability().get(product.getPartOfProductGroup()).draw()));
 				productPriceFactor.put(product, agentConfiguration.getProductGroupPriceFactor().get(product.getPartOfProductGroup()).draw());
 			}
-			posAgents.add(new POSAgent(simulationContainer, agentConfiguration.getSpatialDistribution().draw(simulationContainer.getSpatialModel()), agentConfiguration.getInformationAuthority(), productAvailability, productPriceFactor));
+			posAgents.add(new POSAgent(simulationContainer, agentConfiguration.getSpatialDistribution().draw(simulationContainer.getSpatialModel()), agentConfiguration.getInformationAuthority(), productAvailability, productPriceFactor, agentConfiguration.getPurchaseProcessIdentifier()));
 		}
 		return posAgents;
 	}
@@ -72,5 +72,21 @@ public class POSAgentFactory {
 	 */
 	public static Set<POSAgent> createPOSAgents(SimulationContainer simulationContainer, Set<POSAgentConfiguration> configuration) {
 		return createPOSAgents(simulationContainer, simulationContainer.getProducts(), configuration);
+	}
+
+	/**
+	 * Method to create the purchase process for the POSAgents.
+	 * Returns the corresponding purchase process based on the identifier,
+	 * with the POSAgent bound to the process
+	 *
+	 * @param correspondingPOSAgent The agent linked with the purchase process
+	 * @param purchaseProcessIdentifier An identifier for the purchase process to be initialized
+	 * @throws IllegalArgumentException Will be thrown when the purchase process identifier refers to an unimplemented purchase process
+	 */
+	public static PurchaseProcess createPurchaseProcess(POSAgent correspondingPOSAgent, String purchaseProcessIdentifier) throws IllegalArgumentException{
+		switch(purchaseProcessIdentifier){
+			case "TrivialPurchaseProcess": return new TrivialPurchaseProcess(correspondingPOSAgent);
+			default: throw new IllegalArgumentException("Purchase process "+purchaseProcessIdentifier+" is not implemented!!\nPlease provide a valid one!");
+		}
 	}
 }

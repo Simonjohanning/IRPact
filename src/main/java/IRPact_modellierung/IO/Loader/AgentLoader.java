@@ -812,7 +812,10 @@ public class AgentLoader {
             double informationAuthority;
             if(!posAgentConfiguration.get(index).containsKey("informationAuthority")) throw new IllegalArgumentException("Configuration of pos agent "+index+" errornous!!\n No informationAuthority set!");
             else informationAuthority = (Double) posAgentConfiguration.get(index).get("informationAuthority");
-            posAgentConfigurationSet.add(new POSAgentConfiguration(productGroupAvailability, productGroupPriceFactor, (SpatialDistribution) distributions.get((String) posAgentConfiguration.get(index).get("spatialDistribution")), (String) posAgentConfiguration.get(index).get("name"), informationAuthority));
+            String purchaseProcessIdentifier;
+            if(!posAgentConfiguration.get(index).containsKey("purchaseProcessIdentifier")) throw new IllegalArgumentException("Configuration of pos agent "+index+" errornous!!\n No purchaseProcessIdentifier set!");
+            else purchaseProcessIdentifier = (String) posAgentConfiguration.get(index).get("purchaseProcessIdentifier");
+            posAgentConfigurationSet.add(new POSAgentConfiguration(productGroupAvailability, productGroupPriceFactor, (SpatialDistribution) distributions.get((String) posAgentConfiguration.get(index).get("spatialDistribution")), (String) posAgentConfiguration.get(index).get("name"), informationAuthority, purchaseProcessIdentifier));
         }
         return posAgentConfigurationSet;
     }

@@ -21,9 +21,10 @@ import java.util.Set;
  */
 public class POSAgent extends SpatialInformationAgent {
 //TODO think about non-spatial POS agent
-	//maps to describe what products are available at the POS and how expensive they are (relatively)
+
 	private Map<Product, Boolean> productAvailability;
 	private Map<Product, Double> productPriceFactor;
+	private PurchaseProcess correspondingPurchaseProcess;
 
 	/**
 	 * Initializes a point-of-sales agent
@@ -33,32 +34,41 @@ public class POSAgent extends SpatialInformationAgent {
 	 * @param informationAuthority The authority information stemming from this agent has
 	 * @param productAvailability A map describing which products are available at the POS agent at initialization time
 	 * @param productPriceFactor A map describing the (relative) price of the respective products
+	 * @param purchaseProcessIdentifier A string refering to the purchase process the POS agent models
 	 */
-	public POSAgent(SimulationContainer simulationContainer, Point2D coordinates, double informationAuthority, Map<Product, Boolean> productAvailability, Map<Product, Double> productPriceFactor) {
+	public POSAgent(SimulationContainer simulationContainer, Point2D coordinates, double informationAuthority, Map<Product, Boolean> productAvailability, Map<Product, Double> productPriceFactor, String purchaseProcessIdentifier) {
 		super(simulationContainer, coordinates, informationAuthority);
 		this.productAvailability = productAvailability;
 		this.productPriceFactor = productPriceFactor;
-	}
-
-	public Set<Product> showAvailableProducts() {
-		HashSet<Product> availableProducts = new HashSet<Product>();
-		for(Product productToCheck : productAvailability.keySet()){
-			if(productAvailability.get(productToCheck)) availableProducts.add(productToCheck);
-		}
-		return availableProducts;
+		this.correspondingPurchaseProcess = POSAgentFactory.createPurchaseProcess(this, purchaseProcessIdentifier);
 	}
 
 	/**
-	 * 
-	 * @param product
+	 * Method to check whether a product is available at this POS
+	 *
+	 * @return true if the product is available (i.e. in the productAvailability map), false if not
 	 */
-	//TODO how to signify price?
-	public double giveProductPrice(Product product) {
+	public boolean productAvailable(Product product){
+		return productAvailability.containsKey(product);
+	}
+
+	/**
+	 * Method to determine the price of a Product at the respective POS.
+	 * Requires the respective product to have a product attribute called 'price',
+	 * and will thrown an error if it doesn't
+	 *
+	 * @param product The product whose price is to be calculated (if no product attribute exists with the name 'price', an error will be thrown)
+	 * @throws IllegalAccessError Will be thrown when the product doesn't have a productAttribute named 'price'
+	 */
+	public double giveProductPrice(Product product) throws IllegalAccessError{
+		if(!productPriceFactor.containsKey(product)) throw new IllegalAccessError("No product price factor is set for product "+product+"!!!");
 		for(ProductAttribute productAttribute : product.getProductAttributes()){
 			if(productAttribute.getCorrespondingProductGroupAttribute().getName().equals("price")) return productAttribute.getValue()*productPriceFactor.get(product);
 		}
-		//TODO make a nice failcheck
-		return -1.0;
+		throw new IllegalAccessError("Product "+product.getName()+" has no product attribute called 'price'!!\nPlease make sure the model is set up accordingly!!");
 	}
 
+	public PurchaseProcess getCorrespondingPurchaseProcess() {
+		return correspondingPurchaseProcess;
+	}
 }
