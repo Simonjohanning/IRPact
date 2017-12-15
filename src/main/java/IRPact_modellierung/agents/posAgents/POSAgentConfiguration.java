@@ -19,7 +19,7 @@ public class POSAgentConfiguration {
     private SpatialDistribution spatialDistribution;
     private String name;
     private double informationAuthority;
-    private String purchaseProcessIdentifier;
+    private String PurchaseProcessSchemeIdentifier;
 
     /**
      * Data structure to describe the configuration of a POS agent
@@ -30,13 +30,13 @@ public class POSAgentConfiguration {
      * @param spatialDistribution The spatial distribution from which the initial position of a POS agent is drawn
      * @param name The base name of a POS agent
      */
-    public POSAgentConfiguration(Map<ProductGroup, BooleanDistribution> productGroupAvailability, Map<ProductGroup, UnivariateDistribution> productGroupPriceFactor, SpatialDistribution spatialDistribution, String name, double informationAuthority, String purchaseProcessIdentifier) {
+    public POSAgentConfiguration(Map<ProductGroup, BooleanDistribution> productGroupAvailability, Map<ProductGroup, UnivariateDistribution> productGroupPriceFactor, SpatialDistribution spatialDistribution, String name, double informationAuthority, String PurchaseProcessSchemeIdentifier) {
         this.productGroupAvailability = productGroupAvailability;
         this.productGroupPriceFactor = productGroupPriceFactor;
         this.spatialDistribution = spatialDistribution;
         this.name = name;
         this.informationAuthority = informationAuthority;
-        this.purchaseProcessIdentifier = purchaseProcessIdentifier;
+        this.PurchaseProcessSchemeIdentifier = PurchaseProcessSchemeIdentifier;
     }
 
     public Map<ProductGroup, BooleanDistribution> getProductGroupAvailability() {
@@ -59,7 +59,7 @@ public class POSAgentConfiguration {
         return informationAuthority;
     }
 
-    public String getPurchaseProcessIdentifier() {
-        return purchaseProcessIdentifier;
+    public String getPurchaseProcessSchemeIdentifier() {
+        return PurchaseProcessSchemeIdentifier;
     }
 }

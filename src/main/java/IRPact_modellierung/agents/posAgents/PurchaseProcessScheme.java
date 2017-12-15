@@ -7,7 +7,7 @@ import IRPact_modellierung.products.ProductGroup;
 import java.util.Set;
 
 /**
- * A PurchaseProcess models the process of how a consumer agent
+ * A PurchaseProcessScheme models the process of how a consumer agent
  * behaves during the purchase of a product at a point of sale.
  * It can become arbitrarily complex, but basically filters out a number
  * of products relevant for the consumer agent at that point
@@ -16,11 +16,11 @@ import java.util.Set;
  * @author Simon Johanning
  *
  */
-public abstract class PurchaseProcess {
+public abstract class PurchaseProcessScheme {
 
     protected POSAgent correspondingPOS;
 
-    public PurchaseProcess(POSAgent correspondingPOS){
+    public PurchaseProcessScheme(POSAgent correspondingPOS){
         this.correspondingPOS = correspondingPOS;
     }
 

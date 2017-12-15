@@ -8,7 +8,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
- * The TrivialPurchaseProcess is a default purchase process
+ * The TrivialPurchaseProcessScheme is a default purchase process
  * that acts as a place holder until a good PP is defined.
  * It basically only filters out all products not available at the POS,
  * and if a purchase process features in the model, the modeler should
@@ -16,9 +16,9 @@ import java.util.Set;
  *
  * @author Simon Johanning
  */
-public class TrivialPurchaseProcess extends PurchaseProcess{
+public class TrivialPurchaseProcessScheme extends PurchaseProcessScheme{
 
-    public TrivialPurchaseProcess(POSAgent correspondingPOS) {
+    public TrivialPurchaseProcessScheme(POSAgent correspondingPOS) {
         super(correspondingPOS);
     }
 

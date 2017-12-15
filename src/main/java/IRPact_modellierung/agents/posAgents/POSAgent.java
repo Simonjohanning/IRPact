@@ -24,7 +24,7 @@ public class POSAgent extends SpatialInformationAgent {
 
 	private Map<Product, Boolean> productAvailability;
 	private Map<Product, Double> productPriceFactor;
-	private PurchaseProcess correspondingPurchaseProcess;
+	private PurchaseProcessScheme correspondingPurchaseProcessScheme;
 
 	/**
 	 * Initializes a point-of-sales agent
@@ -34,13 +34,13 @@ public class POSAgent extends SpatialInformationAgent {
 	 * @param informationAuthority The authority information stemming from this agent has
 	 * @param productAvailability A map describing which products are available at the POS agent at initialization time
 	 * @param productPriceFactor A map describing the (relative) price of the respective products
-	 * @param purchaseProcessIdentifier A string refering to the purchase process the POS agent models
+	 * @param PurchaseProcessSchemeIdentifier A string refering to the purchase process the POS agent models
 	 */
-	public POSAgent(SimulationContainer simulationContainer, Point2D coordinates, double informationAuthority, Map<Product, Boolean> productAvailability, Map<Product, Double> productPriceFactor, String purchaseProcessIdentifier) {
+	public POSAgent(SimulationContainer simulationContainer, Point2D coordinates, double informationAuthority, Map<Product, Boolean> productAvailability, Map<Product, Double> productPriceFactor, String PurchaseProcessSchemeIdentifier) {
 		super(simulationContainer, coordinates, informationAuthority);
 		this.productAvailability = productAvailability;
 		this.productPriceFactor = productPriceFactor;
-		this.correspondingPurchaseProcess = POSAgentFactory.createPurchaseProcess(this, purchaseProcessIdentifier);
+		this.correspondingPurchaseProcessScheme = POSAgentFactory.createPurchaseProcessScheme(this, PurchaseProcessSchemeIdentifier);
 	}
 
 	/**
@@ -68,7 +68,7 @@ public class POSAgent extends SpatialInformationAgent {
 		throw new IllegalAccessError("Product "+product.getName()+" has no product attribute called 'price'!!\nPlease make sure the model is set up accordingly!!");
 	}
 
-	public PurchaseProcess getCorrespondingPurchaseProcess() {
-		return correspondingPurchaseProcess;
+	public PurchaseProcessScheme getCorrespondingPurchaseProcessScheme() {
+		return correspondingPurchaseProcessScheme;
 	}
 }

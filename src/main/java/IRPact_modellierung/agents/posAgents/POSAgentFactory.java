@@ -34,7 +34,7 @@ public class POSAgentFactory {
 			productAvailability.put(product, true);
 			productPriceFactor.put(product, 1.0);
 		}
-		return new POSAgent(simulationContainer, new Point2D.Double(0.0, 0.0), 1.0, productAvailability, productPriceFactor, "TrivialPurchaseProcess");
+		return new POSAgent(simulationContainer, new Point2D.Double(0.0, 0.0), 1.0, productAvailability, productPriceFactor, "TrivialPurchaseProcessScheme");
 	}
 
 	/**
@@ -57,7 +57,7 @@ public class POSAgentFactory {
 				productAvailability.put(product, ValueConversionHelper.signToBoolean(agentConfiguration.getProductGroupAvailability().get(product.getPartOfProductGroup()).draw()));
 				productPriceFactor.put(product, agentConfiguration.getProductGroupPriceFactor().get(product.getPartOfProductGroup()).draw());
 			}
-			posAgents.add(new POSAgent(simulationContainer, agentConfiguration.getSpatialDistribution().draw(simulationContainer.getSpatialModel()), agentConfiguration.getInformationAuthority(), productAvailability, productPriceFactor, agentConfiguration.getPurchaseProcessIdentifier()));
+			posAgents.add(new POSAgent(simulationContainer, agentConfiguration.getSpatialDistribution().draw(simulationContainer.getSpatialModel()), agentConfiguration.getInformationAuthority(), productAvailability, productPriceFactor, agentConfiguration.getPurchaseProcessSchemeIdentifier()));
 		}
 		return posAgents;
 	}
@@ -80,13 +80,13 @@ public class POSAgentFactory {
 	 * with the POSAgent bound to the process
 	 *
 	 * @param correspondingPOSAgent The agent linked with the purchase process
-	 * @param purchaseProcessIdentifier An identifier for the purchase process to be initialized
+	 * @param PurchaseProcessSchemeIdentifier An identifier for the purchase process to be initialized
 	 * @throws IllegalArgumentException Will be thrown when the purchase process identifier refers to an unimplemented purchase process
 	 */
-	public static PurchaseProcess createPurchaseProcess(POSAgent correspondingPOSAgent, String purchaseProcessIdentifier) throws IllegalArgumentException{
-		switch(purchaseProcessIdentifier){
-			case "TrivialPurchaseProcess": return new TrivialPurchaseProcess(correspondingPOSAgent);
-			default: throw new IllegalArgumentException("Purchase process "+purchaseProcessIdentifier+" is not implemented!!\nPlease provide a valid one!");
+	public static PurchaseProcessScheme createPurchaseProcessScheme(POSAgent correspondingPOSAgent, String PurchaseProcessSchemeIdentifier) throws IllegalArgumentException{
+		switch(PurchaseProcessSchemeIdentifier){
+			case "TrivialPurchaseProcessScheme": return new TrivialPurchaseProcessScheme(correspondingPOSAgent);
+			default: throw new IllegalArgumentException("Purchase process "+PurchaseProcessSchemeIdentifier+" is not implemented!!\nPlease provide a valid one!");
 		}
 	}
 }
