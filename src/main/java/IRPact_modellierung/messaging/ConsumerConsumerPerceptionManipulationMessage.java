@@ -1,10 +1,15 @@
 package IRPact_modellierung.messaging;
 
 import IRPact_modellierung.agents.consumerAgents.ConsumerAgent;
+import IRPact_modellierung.network.SNEdge;
+import IRPact_modellierung.network.SNNode;
+import IRPact_modellierung.network.SocialGraph;
 import IRPact_modellierung.products.Product;
 import IRPact_modellierung.products.ProductAttribute;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+
+import java.util.Map;
 
 /**
  * A ConsumerConsumerPerceptionManipulationMessage is a message from a ConsumerAgent to a ConsumerAgent
@@ -39,12 +44,15 @@ public class ConsumerConsumerPerceptionManipulationMessage extends Message {
 	 * @param receiver The ConsumerAgent receiving the message
 	 * @param productAttributeConcerned The ProductAttribute the message is about
 	 * @param productConcerned The product the product attribute belongs to
-	 * @param edgeWeightConsumerEdge The strength of the transmitted perception
 	 */
-	public ConsumerConsumerPerceptionManipulationMessage(ConsumerAgent sender, ConsumerAgent receiver, ProductAttribute productAttributeConcerned, Product productConcerned, double edgeWeightConsumerEdge) {
+	public ConsumerConsumerPerceptionManipulationMessage(ConsumerAgent sender, ConsumerAgent receiver, ProductAttribute productAttributeConcerned, Product productConcerned) throws IllegalArgumentException{
 		super(sender, receiver);
 		this.productAttributeConcerned = productAttributeConcerned;
-		this.edgeWeightConsumerEdge = edgeWeightConsumerEdge;
+		try {
+			this.edgeWeightConsumerEdge = determineEdgeWeight(sender, receiver);
+		} catch (IllegalArgumentException e) {
+			throw e;
+		}
 		this.productConcerned = productConcerned;
 		fooLog.debug("Message from {} to {} about product attribute {} created", sender, receiver, productAttributeConcerned);
 	}

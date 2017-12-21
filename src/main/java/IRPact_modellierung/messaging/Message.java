@@ -1,6 +1,12 @@
 package IRPact_modellierung.messaging;
 
 import IRPact_modellierung.agents.Agent;
+import IRPact_modellierung.agents.consumerAgents.ConsumerAgent;
+import IRPact_modellierung.network.SNEdge;
+import IRPact_modellierung.network.SNNode;
+import IRPact_modellierung.network.SocialGraph;
+
+import java.util.Map;
 
 /**
  * Messages model the communication activity between agents.
@@ -40,5 +46,19 @@ public abstract class Message {
 	 * @param systemTime The time at which the message is processed / evaluated
 	 */
 	public abstract void processMessage(double systemTime);
+
+	protected double determineEdgeWeight(ConsumerAgent sender, ConsumerAgent receiver) {
+		if(sender.getAssociatedSimulationContainer() != receiver.getAssociatedSimulationContainer()) throw new IllegalArgumentException("Message sender and receiver are in different simulation containers!!");
+		else{
+			SocialGraph socialGraph = sender.getAssociatedSimulationContainer().getSocialNetwork().getSocialGraph();
+			Map<ConsumerAgent, SNNode> casNMap = sender.getAssociatedSimulationContainer().getCasNMap();
+			try {
+				SNEdge respectiveEdge = socialGraph.retrieveEdge(casNMap.get(sender), casNMap.get(receiver), SocialGraph.EDGEMEDIUM.COMMUNICATION);
+				return respectiveEdge.getEdgeWeight();
+			} catch (IllegalArgumentException e) {
+				throw e;
+			}
+		}
+	}
 
 }

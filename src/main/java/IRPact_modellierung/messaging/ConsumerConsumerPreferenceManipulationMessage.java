@@ -17,11 +17,11 @@ public class ConsumerConsumerPreferenceManipulationMessage extends Message {
 	private double edgeWeight;
 	private double preferenceHomogenizationFactor;
 
-	public ConsumerConsumerPreferenceManipulationMessage(ConsumerAgent sender, ConsumerAgent receiver, Preference senderPreference, double preferenceHomogenizationFactor, double edgeWeight) {
+	public ConsumerConsumerPreferenceManipulationMessage(ConsumerAgent sender, ConsumerAgent receiver, Preference senderPreference, double preferenceHomogenizationFactor) {
 		super(sender, receiver);
 		this.senderPreference = senderPreference;
-		this.edgeWeight = edgeWeight;
 		this.preferenceHomogenizationFactor = preferenceHomogenizationFactor;
+		edgeWeight = determineEdgeWeight(sender, receiver);
 	}
 
 	public Preference getSenderPreference() {
