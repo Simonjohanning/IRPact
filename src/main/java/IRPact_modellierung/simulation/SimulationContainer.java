@@ -38,6 +38,7 @@ public class SimulationContainer {
 	private EventScheduler eventScheduler;
 	private Map<FixedProductDescription, Product> fixedProductMap;
 	private Map<SNNode, ConsumerAgent> sNMap;
+	private Map<ConsumerAgent, SNNode> casNMap;
 	private Set<Product> historicalProducts;
 	private Set<CompanyAgent> companyAgents;
 	private PolicyAgent policyAgent;
@@ -59,12 +60,17 @@ public class SimulationContainer {
 		this.companyAgents = companyAgents;
 		this.policyAgent = null;
 		needsInSimulation = LazynessHelper.aggregateNeeds(simulationConfiguration.getProductConfiguration().getProductGroups());
+		casNMap = new HashMap<>();
+		for(SNNode currentNode : sNMap.keySet()){
+			casNMap.put(sNMap.get(currentNode), currentNode);
+		}
 	}
 
 	public SimulationContainer(Configuration simulationConfiguration) {
 		this.simulationConfiguration = simulationConfiguration;
 		fixedProductMap = new HashMap<FixedProductDescription, Product>();
 		sNMap = new HashMap<SNNode, ConsumerAgent>();
+		casNMap = new HashMap<ConsumerAgent, SNNode>();
 		historicalProducts = new HashSet<Product>();
 		companyAgents = new HashSet<CompanyAgent>();
 		policyAgent = null;
@@ -133,9 +139,14 @@ public class SimulationContainer {
 		return sNMap;
 	}
 
+	public Map<ConsumerAgent, SNNode> getCasNMap() {
+		return casNMap;
+	}
+
 	public void addSNNodeConsumerAgentMapping(SNNode associatedNode, ConsumerAgent containingAgent){
 		if(!(sNMap.containsKey(associatedNode))){
 			sNMap.put(associatedNode, containingAgent);
+			casNMap.put(containingAgent, associatedNode);
 		}else fooLog.warn("Tried to modify an existing SNNode-Consumeragent tuple ({},{})! Will be ignored", associatedNode, containingAgent);
 	}
 
