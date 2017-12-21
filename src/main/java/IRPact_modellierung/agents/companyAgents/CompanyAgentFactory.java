@@ -2,6 +2,7 @@ package IRPact_modellierung.agents.companyAgents;
 
 import IRPact_modellierung.agents.companyAgents.advertisement.AdvertisementScheme;
 import IRPact_modellierung.agents.companyAgents.advertisement.DefaultAdvertisementScheme;
+import IRPact_modellierung.agents.companyAgents.advertisement.EmptyAdvertisementScheme;
 import IRPact_modellierung.agents.companyAgents.advertisement.UniformAdvertisementScheme;
 import IRPact_modellierung.distributions.Distribution;
 import IRPact_modellierung.distributions.UnivariateDistribution;
@@ -135,6 +136,8 @@ public class CompanyAgentFactory {
                     else return new DefaultAdvertisementScheme((UnivariateDistribution) distributions.get((String) advertisementSchemeParameters.get("numberOfMessages")), (Double) advertisementSchemeParameters.get("messagePreferenceIncrease"), (Double) advertisementSchemeParameters.get("advertisingImpactFactor"), (Double) advertisementSchemeParameters.get("fractionPreferenceMessages"));
                 case "UniformAdvertisementScheme":
                     return new UniformAdvertisementScheme();
+                case "EmptyAdvertisementScheme" :
+                    return new EmptyAdvertisementScheme();
                 default:
                     throw new IllegalArgumentException("AdvertisementScheme " + advertisementSchemeQualifier + " is not implemented!!\nMake sure to specify an implemented scheme or implement is yourself!");
             }
