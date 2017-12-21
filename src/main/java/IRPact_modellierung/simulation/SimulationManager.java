@@ -10,11 +10,15 @@ import java.io.IOException;
 public class SimulationManager {
 
     private static final org.apache.logging.log4j.Logger LOG = LogManager.getLogger("debugConsoleLogger");
-    private static final String CONFIGPATH = "../configuration/SN1HSMC/";
+    private static final String CONFIGPATH = "../configuration/N1/";
 
     public static void main(String[] args){
         try {
-            Configuration simulationConfiguration = ConfigLoader.loadConfiguration(CONFIGPATH);
+            String configPath;
+            if(args.length == 0) configPath = CONFIGPATH;
+            else if(args[0].equals("")) configPath = CONFIGPATH;
+            else configPath = args[0];
+            Configuration simulationConfiguration = ConfigLoader.loadConfiguration(configPath);
             LOG.info("Configuration loaded sucessfully");
             SimulationContainer simulationContainer = SimulationFactory.createSimulation(simulationConfiguration);
             LOG.info("Simulation created");
