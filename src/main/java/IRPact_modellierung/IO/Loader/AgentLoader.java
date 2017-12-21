@@ -69,6 +69,7 @@ public class AgentLoader {
             if (file.isFile()) {
                 try {
                     ConsumerAgentGroup correspondingCag = loadConsumerAgentGroup(file, productConfiguration, distributions, allProductGroupAttributes, values, decisionConfiguration);
+                    values.addAll(correspondingCag.getConsumerAgentGroupPreferences().keySet());
                     consumerAgentGroups.add(correspondingCag);
                 } catch (JsonMappingException jme) {
                     jme.printStackTrace();
@@ -123,7 +124,7 @@ public class AgentLoader {
                 throw e;
             }
             //set up affinities
-            HashMap<String, Object> affinitiesJSON = mapper.readValue(new File(configPath + "consumerAgentGroupAffinities.json"), HashMap.class);
+            HashMap<String, Object> affinitiesJSON = (HashMap<String, Object>) agentConfigurationJSON.get("consumerAgentGroupAffinities.json");
             Map<ConsumerAgentGroup, Map<ConsumerAgentGroup, Double>> affinities = new HashMap<ConsumerAgentGroup, Map<ConsumerAgentGroup, Double>>();
             HashMap<String, ConsumerAgentGroup> cagMapping = StructureEnricher.attachConsumerAgentGroupNames(consumerAgentGroups);
             //set affinities for each agent group
@@ -342,7 +343,7 @@ public class AgentLoader {
             else{
                 try {
                     if(!consumerAgentGroupMap.containsKey("needDevelopment")) throw new IllegalArgumentException("No entry 'needDevelopment' was found in the configuration file "+file.toString());
-                    else needDevelopmentScheme = NeedDevelopmentFactory.createNeedDevelopmentScheme((String) consumerAgentGroupMap.get("needDevelopmentScheme"), loadNeedMap(consumerAgentGroupMap.get("needDevelopment"), LazynessHelper.aggregateNeeds(productConfiguration.getProductGroups())));
+                    else needDevelopmentScheme = NeedDevelopmentFactory.createNeedDevelopmentScheme((String) consumerAgentGroupMap.get("needDevelopmentScheme"), loadNeedMap(consumerAgentGroupMap.get("needIndicatorMap"), LazynessHelper.aggregateNeeds(productConfiguration.getProductGroups())));
                 } catch (IllegalArgumentException e) {
                     throw e;
                 }
@@ -529,11 +530,11 @@ public class AgentLoader {
      */
     private static Map<Need,Double> loadNeedMap(Object needDevelopment, Set<Need> needs) throws IllegalArgumentException{
         Map<Need, Double> needDevelopmentMap = new HashMap<Need, Double>();
-        ArrayList<Map<String, Object>> needDevelopmentList;
+        Map<String, Double> needDevelopmentStringMap;
         try {
-            needDevelopmentList = (ArrayList<Map<String, Object>>) needDevelopment;
+            needDevelopmentStringMap = (Map<String, Double>) needDevelopment;
         } catch (ClassCastException cce) {
-            throw new IllegalArgumentException("Object describing the needDevelopment couldn't be cast to an ArrayList of String-Object HashMaps; \nPlease provide valid arguments!!\n"+ cce.toString());
+            throw new IllegalArgumentException("Object describing the needDevelopment couldn't be cast to a String-double HashMap; \nPlease provide valid arguments!!\n"+ cce.toString());
         }
         Map<String, Need> needMap;
         try {
@@ -542,11 +543,11 @@ public class AgentLoader {
             throw e;
         }
 
-        for (Map<String, Object> aNeedDevelopmentList : needDevelopmentList) {
-            if (!needMap.containsKey(aNeedDevelopmentList.get("need")))
-                throw new IllegalArgumentException("Configuration for corresponding consumerAgent group refers to an unrecognized need: " + aNeedDevelopmentList.get("need") + "!\nPlease change this to a valid need or add this to the need configuration!");
+        for (String needDevelopmentString : needDevelopmentStringMap.keySet()) {
+            if (!needMap.containsKey(needDevelopmentString))
+                throw new IllegalArgumentException("Configuration for corresponding consumerAgent group refers to an unrecognized need: " + needDevelopmentString + "!\nPlease change this to a valid need or add this to the need configuration!");
             else
-                needDevelopmentMap.put(needMap.get(aNeedDevelopmentList.get("need")), (Double) aNeedDevelopmentList.get("needIndicator"));
+                needDevelopmentMap.put(needMap.get(needDevelopmentString), needDevelopmentStringMap.get(needDevelopmentString));
         }
         return needDevelopmentMap;
     }
@@ -562,9 +563,9 @@ public class AgentLoader {
      * @throws IllegalArgumentException
      */
     private static HashMap<Value,UnivariateDistribution> loadConsumerAgentGroupValues(Object consumerAgentGroupValues, Set<Value> values, Map<String, Distribution> distributions) throws IllegalArgumentException{
-        ArrayList<HashMap<String, Object>> cagvMap;
+        HashMap<String, String> cagvMap;
         try{
-            cagvMap = (ArrayList<HashMap<String, Object>>) consumerAgentGroupValues;
+            cagvMap = (HashMap<String, String>) consumerAgentGroupValues;
         } catch (ClassCastException cce){
             throw new IllegalArgumentException("Object describing the values of the respective ConsumerAgentGroup couldn't be cast to an ArrayList of String-Object HashMaps; \nPlease provide valid arguments!!\n"+ cce.toString());
         }
@@ -575,16 +576,14 @@ public class AgentLoader {
         } catch (IllegalArgumentException e){
             throw e;
         }
-        for (HashMap<String, Object> aCagvMap : cagvMap) {
-            if (!valueMap.keySet().contains((String) aCagvMap.get("value"))) {
-                Value newValue = new Value((String) aCagvMap.get("value"));
+        for (String currentValueString : cagvMap.keySet()) {
+            if (!valueMap.keySet().contains(currentValueString)){
+                Value newValue = new Value(currentValueString);
                 values.add(newValue);
-                valueMap.put((String) aCagvMap.get("value"), newValue);
+                valueMap.put(currentValueString, newValue);
             }
-            if (!distributions.containsKey(aCagvMap.get("strength")))
-                throw new IllegalArgumentException("Value " + aCagvMap.get("value") + " refers to a distribution not configured (or incorrectly passed to the ConsumerAgentGroup loader).\nPlease ensure that only existing distributions are referred or add the distribution " + aCagvMap.get("strength") + " to the configuration.");
-            else
-                cagp.put(valueMap.get((String) aCagvMap.get("value")), (UnivariateDistribution) distributions.get(aCagvMap.get("strength")));
+            if (!distributions.containsKey(cagvMap.get(currentValueString))) throw new IllegalArgumentException("Value " + currentValueString + " refers to a distribution not configured (or incorrectly passed to the ConsumerAgentGroup loader).\nPlease ensure that only existing distributions are referred or add the distribution " + cagvMap.get(currentValueString) + " to the configuration.");
+            else cagp.put(valueMap.get(currentValueString), (UnivariateDistribution) distributions.get(cagvMap.get(currentValueString)));
         }
         return cagp;
     }
