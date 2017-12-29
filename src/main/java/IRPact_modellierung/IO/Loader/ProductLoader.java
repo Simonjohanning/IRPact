@@ -285,7 +285,14 @@ public class ProductLoader {
             String[] fileParts = fileName.split("\\.");
             //Load the respective product lifetime distribution
             UnivariateDistribution productLifetimeDistribution;
-            if(productGroupJSON.containsKey("productLifetimeDistribution")) productLifetimeDistribution = (UnivariateDistribution) distributions.get((String) productGroupJSON.get("productLifetimeDistribution"));
+            if(productGroupJSON.containsKey("productLifetimeDistribution")){
+                try {
+                    if(!distributions.containsKey((String) productGroupJSON.get("productLifetimeDistribution"))) throw new IllegalArgumentException("Error!! Distribution "+(String) productGroupJSON.get("productLifetimeDistribution")+" used for the productLifetimeDistribution of product group "+fileParts[0]+" is not configured!!");
+                    productLifetimeDistribution = (UnivariateDistribution) distributions.get((String) productGroupJSON.get("productLifetimeDistribution"));
+                } catch (Exception e) {
+                    throw e;
+                }
+            }
             else throw new IllegalStateException("product "+fileParts[0]+" has no valid productLifetimeDistribution associated with it!");
             //load fixed products
             ArrayList<HashMap<String, Object>> fixedProductsJSON;
