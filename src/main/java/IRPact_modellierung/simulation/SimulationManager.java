@@ -10,14 +10,15 @@ import java.io.IOException;
 public class SimulationManager {
 
     private static final org.apache.logging.log4j.Logger LOG = LogManager.getLogger("debugConsoleLogger");
-    private static final String CONFIGPATH = "../configuration/N1/";
+    private static final String CONFIGPATHPREFIX = "../configuration/";
+    private static final String CONFIGPATH = "Schwarz";
 
     public static void main(String[] args){
         try {
             String configPath;
-            if(args.length == 0) configPath = CONFIGPATH;
-            else if(args[0].equals("")) configPath = CONFIGPATH;
-            else configPath = args[0];
+            if(args.length == 0) configPath = CONFIGPATHPREFIX + CONFIGPATH + "/";
+            else if(args[0].equals("")) configPath = CONFIGPATHPREFIX + CONFIGPATH + "/";
+            else configPath = CONFIGPATHPREFIX + args[0] + "/";
             Configuration simulationConfiguration = ConfigLoader.loadConfiguration(configPath);
             LOG.info("Configuration loaded sucessfully");
             SimulationContainer simulationContainer = SimulationFactory.createSimulation(simulationConfiguration);

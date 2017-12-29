@@ -87,6 +87,7 @@ public class SimulationFactory {
                 consumerAgents.addAll(agentsInCAG);
             }
 			container.setConsumerAgents(consumerAgents);
+			fooLog.info("Consumer Agents initialized");
 			//retrieve values
 			Set<Value> valuesUsed = StructureEnricher.getValuesUsed(configuration.getAgentConfiguration().getConsumerAgentGroups());
 			container.setValuesUsed(valuesUsed);
@@ -114,6 +115,7 @@ public class SimulationFactory {
 			for(ScriptedEvent currentEvent : scheduledEvents) {
                 container.getEventScheduler().scheduleEvent(currentEvent);
             }
+            fooLog.info("Container initialized");
 			return container;
 		} catch (UnsupportedOperationException uoe) {
 			throw uoe;
