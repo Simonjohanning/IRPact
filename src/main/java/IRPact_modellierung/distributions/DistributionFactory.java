@@ -19,6 +19,8 @@ public class DistributionFactory {
 
     private static final Logger fooLog = LogManager.getLogger("debugConsoleLogger");
 
+    //TODO Fix Continuous / Spatial distribution!!!!
+
     /**
      * Method to generate instances of distributions.
      * Will return a distribution corresponding to the requested key.
@@ -49,7 +51,28 @@ public class DistributionFactory {
                 else throw new IllegalArgumentException("Not both mass points necessary for a boolean distribution ('true' and 'false') were included in the parameter map");
             case "DummySpatialDistribution":
                 return new DummySpatialDistribution(name);
+            case "PascalDistribution" :
+                if(!(parameters.containsKey("p"))) throw new IllegalArgumentException("The parameter map for the distribution "+name+" of type PascalDistribution lacks the parameter p!!");
+                else if(!(parameters.containsKey("r"))) throw new IllegalArgumentException("The parameter map for the distribution "+name+" of type PascalDistribution lacks the parameter r!!");
+                else{
+                    try {
+                        return new PascalDistribution(name, (Integer) parameters.get("r"), (Double) parameters.get("p"));
+                    } catch (IllegalArgumentException e) {
+                        throw e;
+                    } catch (ClassCastException cce){
+                        throw cce;
+                    }
+                }
+            case "ContSpatialDistribution":
+                return new ContinuousSpatialDistribution(name, loadContinuousSpatialDistribution(parameters));
             default: throw new IllegalArgumentException("WARNING!!! distribution "+distribution+" not implemented!!!");
+        }
+    }
+
+    private static ContinuousDistribution loadContinuousSpatialDistribution(Map<String, Object> parameters) {
+        switch((String) parameters.get("type")){
+            case "NormalDistribution" : return new NormDistribution("fooNorm", (double) parameters.get("mean"), (double) parameters.get("variance"));
+            default: throw new IllegalArgumentException("parameters contains invalid type "+parameters.get("type"));
         }
     }
 
