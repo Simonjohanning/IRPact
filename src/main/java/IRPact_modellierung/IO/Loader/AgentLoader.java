@@ -4,6 +4,7 @@ import IRPact_modellierung.agents.companyAgents.advertisement.AdvertisementSchem
 import IRPact_modellierung.agents.AgentConfiguration;
 import IRPact_modellierung.agents.companyAgents.*;
 import IRPact_modellierung.agents.consumerAgents.*;
+import IRPact_modellierung.events.MarketIntroductionEventDescription;
 import IRPact_modellierung.perception.*;
 import IRPact_modellierung.agents.policyAgent.*;
 import IRPact_modellierung.agents.posAgents.POSAgentConfiguration;
@@ -124,7 +125,7 @@ public class AgentLoader {
                 throw e;
             }
             //set up affinities
-            HashMap<String, Object> affinitiesJSON = (HashMap<String, Object>) agentConfigurationJSON.get("consumerAgentGroupAffinities.json");
+            HashMap<String, Object> affinitiesJSON = (HashMap<String, Object>) agentConfigurationJSON.get("consumerAgentGroupAffinities");
             Map<ConsumerAgentGroup, Map<ConsumerAgentGroup, Double>> affinities = new HashMap<ConsumerAgentGroup, Map<ConsumerAgentGroup, Double>>();
             HashMap<String, ConsumerAgentGroup> cagMapping = StructureEnricher.attachConsumerAgentGroupNames(consumerAgentGroups);
             //set affinities for each agent group
@@ -300,7 +301,7 @@ public class AgentLoader {
             if(!consumerAgentGroupMap.containsKey("fixedProductsAwarenessDistribution")) throw new IllegalArgumentException("No entry 'fixedProductsAwarenessDistribution' was found in the configuration file "+file.toString());
             else{
                 try {
-                    fpad = loadFixedProductAwarenessDistribution(consumerAgentGroupMap.get("fixedProductsAwarenessDistribution"), productConfiguration.getProductGroups(), distributions);
+                    fpad = loadFixedProductAwarenessDistribution(consumerAgentGroupMap.get("fixedProductsAwarenessDistribution"), productConfiguration, distributions, file);
                 } catch (IllegalArgumentException e) {
                     throw e;
                 }
@@ -342,8 +343,8 @@ public class AgentLoader {
             if(!consumerAgentGroupMap.containsKey("needDevelopmentScheme")) throw new IllegalArgumentException("No entry 'needDevelopmentScheme' was found in the configuration file "+file.toString());
             else{
                 try {
-                    if(!consumerAgentGroupMap.containsKey("needDevelopment")) throw new IllegalArgumentException("No entry 'needDevelopment' was found in the configuration file "+file.toString());
-                    else needDevelopmentScheme = NeedDevelopmentFactory.createNeedDevelopmentScheme((String) consumerAgentGroupMap.get("needDevelopmentScheme"), loadNeedMap(consumerAgentGroupMap.get("needIndicatorMap"), LazynessHelper.aggregateNeeds(productConfiguration.getProductGroups())));
+//                    if(!consumerAgentGroupMap.containsKey("needDevelopment")) throw new IllegalArgumentException("No entry 'needDevelopment' was found in the configuration file "+file.toString());
+                    needDevelopmentScheme = NeedDevelopmentFactory.createNeedDevelopmentScheme((String) consumerAgentGroupMap.get("needDevelopmentScheme"), loadNeedMap(consumerAgentGroupMap.get("needIndicatorMap"), LazynessHelper.aggregateNeeds(productConfiguration.getProductGroups())));
                 } catch (IllegalArgumentException e) {
                     throw e;
                 }
@@ -361,7 +362,7 @@ public class AgentLoader {
                 spatialDistribution = (SpatialDistribution) distributions.get(consumerAgentGroupMap.get("spatialDistribution"));
             }
             //load perception schemes map
-            Map<ProductGroupAttribute, PerceptionSchemeConfiguration> productPerceptionSchemes = loadProductPerceptionSchemes(productConfiguration, (HashMap<String, Object>) consumerAgentGroupMap.get("perceptionSchemeConfiguration"), distributions);
+            Map<ProductGroupAttribute, PerceptionSchemeConfiguration> productPerceptionSchemes = loadProductPerceptionSchemes(productConfiguration, (HashMap<String, Object>) consumerAgentGroupMap.get("perceptionSchemeConfiguration"), distributions, file);
             //load communication scheme
             CommunicationScheme communicationScheme = loadConsumerAgentCommunicationScheme((HashMap<String, Object>) consumerAgentGroupMap.get("consumerAgentCommunicationScheme"), distributions);
             return new ConsumerAgentGroup(caga, fileNameArray[0], new HashSet<ConsumerAgent>(), communicationScheme , productPerceptionSchemes, pgad, fpad, decisionMakingProcess, cagp, spatialDistribution, initialProductConfiguration, needDevelopmentScheme, informationAuthority);
@@ -382,18 +383,19 @@ public class AgentLoader {
      *
      * @param productConfiguration The configuration of the products of the simulation; Used to load the perceptionSchemeConfiguration of all ProductGroupAttributes set in the configuration
      * @param perceptionSchemeConfiguration The configuration for the PerceptionSchemes belonging to the ProductGroupAttributes listed in the productConfiguration
+     * @param consumerAgentConfiguration The file containing the configuration of the current consumer agent group
      * @return A map of all ProductGroupAttributes in the simulation and their respective PerceptionSchemeConfiguration
      * @throws IOException Will be thrown when an error occurs reading the file from which the perceptionSchemeConfiguration is read
      * @throws IllegalArgumentException Will be thrown when a perceptionSchemeConfiguration lacks a relevant parameter or uses an unimplemented perceptionScheme
      */
-    private static Map<ProductGroupAttribute, PerceptionSchemeConfiguration> loadProductPerceptionSchemes(ProductConfiguration productConfiguration, HashMap<String, Object> perceptionSchemeConfiguration, Map<String, Distribution> distributionMap) throws IOException, IllegalArgumentException {
+    private static Map<ProductGroupAttribute, PerceptionSchemeConfiguration> loadProductPerceptionSchemes(ProductConfiguration productConfiguration, HashMap<String, Object> perceptionSchemeConfiguration, Map<String, Distribution> distributionMap, File consumerAgentConfiguration) throws IOException, IllegalArgumentException {
         Map<ProductGroupAttribute, PerceptionSchemeConfiguration> perceptionConfigurationMap = new HashMap<>();
         try{
             for(ProductGroup currentProductGroup : productConfiguration.getProductGroups()){
-                if(!perceptionSchemeConfiguration.containsKey(currentProductGroup.getGroupName())) throw new IllegalArgumentException("Errornous configuration!! No perceptionSchemeConfiguration set for product group "+currentProductGroup.getGroupName()+"!!\nPlease provide a valid configuration!!");
+                if(!perceptionSchemeConfiguration.containsKey(currentProductGroup.getGroupName())) throw new IllegalArgumentException("Errornous configuration!! No perceptionSchemeConfiguration set for product group "+currentProductGroup.getGroupName()+" of consumer agent group "+consumerAgentConfiguration.getName()+"!!\nPlease provide a valid configuration!!");
                 Map<String, Object> productGroupPerceptionSchemeConfiguration = (HashMap<String, Object>) perceptionSchemeConfiguration.get(currentProductGroup.getGroupName());
                 for(ProductGroupAttribute currentPGA : currentProductGroup.getProductGroupAttributes()){
-                    if(!productGroupPerceptionSchemeConfiguration.containsKey(currentPGA.getName())) throw new IllegalArgumentException("Errornous configuration!! No perceptionSchemeConfiguration set for product group attribute "+currentPGA.getName()+" of product group "+currentProductGroup.getGroupName()+"!!\nPlease provide a valid configuration!!");
+                    if(!productGroupPerceptionSchemeConfiguration.containsKey(currentPGA.getName())) throw new IllegalArgumentException("Errornous configuration!! No perceptionSchemeConfiguration set for product group attribute "+currentPGA.getName()+" of product group "+currentProductGroup.getGroupName()+"of consumer agent group "+consumerAgentConfiguration.getName()+"!!\nPlease provide a valid configuration!!");
                     Map<String, Object> productAttributePerceptionMap = (HashMap<String, Object>) productGroupPerceptionSchemeConfiguration.get(currentPGA.getName());
                     if(!productAttributePerceptionMap.containsKey("perceptionScheme")) throw new IllegalArgumentException("Errornous configuration!! No perceptionScheme set for the perception configuration of product group attribute "+currentPGA.getName()+" of product group "+currentProductGroup.getGroupName()+"!!\nPlease provide a valid configuration!!");
                     else{
@@ -593,12 +595,12 @@ public class AgentLoader {
      * based on the configuration object fixedProductsAwarenessDistribution
      *
      * @param fixedProductsAwarenessDistribution Object representing the FixedProductDescription-BooleanDistribution configuration for an agent group. Must parse to a HashMap of String-String hashMaps, with keys referring to the names of FixedProducts and values corresponding to the names of the the (boolean) distributions to use
-     * @param productGroups A set of productGroups containing the fixedProductDescriptions referred in the keys of fixedProductsAwarenessDistribution
+     * @param productConfiguration The configuration of the products within the simulation
      * @param distributions A map of distributions and their corresponding names (as Strings), containing at least the distributions referred to in the values of the map encoded by fixedProductsAwarenessDistribution
      * @return A map of the FixedProductDescriptions and their distributions as configured by FixedProductDescription
      * @throws IllegalArgumentException Will be thrown when the fixedProductsAwarenessDistribution can't be cast to a String-String hashmap, extracting and attaching the names to the fixedProductDescriptions goes wrong or one of the entries in the fixedProductsAwarenessDistribution is not included in the fixed products or distributions
      */
-    private static HashMap<FixedProductDescription,BooleanDistribution> loadFixedProductAwarenessDistribution(Object fixedProductsAwarenessDistribution, Set<ProductGroup> productGroups, Map<String, Distribution> distributions) throws IllegalArgumentException{
+    private static HashMap<FixedProductDescription,BooleanDistribution> loadFixedProductAwarenessDistribution(Object fixedProductsAwarenessDistribution, ProductConfiguration productConfiguration, Map<String, Distribution> distributions, File referenceFile) throws IllegalArgumentException{
         HashMap<FixedProductDescription, BooleanDistribution> fpad = new HashMap<FixedProductDescription, BooleanDistribution>();
         HashMap<String, String> fpadMap;
         try{
@@ -608,12 +610,15 @@ public class AgentLoader {
         }
         HashMap<String, FixedProductDescription> fpd;
         try{
-            fpd = StructureEnricher.attachFixedProductDescriptionNames(LazynessHelper.fixedProductDescriptionsFromProductGroups(productGroups));
+            fpd = StructureEnricher.attachFixedProductDescriptionNames(LazynessHelper.fixedProductDescriptionsFromProductGroups(productConfiguration.getProductGroups()));
+            for(MarketIntroductionEventDescription mied : productConfiguration.getMarketIntroductionEvents()){
+                fpd.put(mied.getCorrespondingFixedProduct().getName(), mied.getCorrespondingFixedProduct());
+            }
         }  catch (IllegalArgumentException e){
             throw e;
         }
         for (String key : fpadMap.keySet()) {
-            if(!fpd.containsKey(key)) throw new IllegalArgumentException("No FixedProduct with the name "+key+" could be found!!\nPlease provide valid arguments!!");
+            if(!fpd.containsKey(key)) throw new IllegalArgumentException("No FixedProduct with the name "+key+" could be found in file "+referenceFile+"!!\nPlease provide valid arguments!!");
             else if(!distributions.containsKey(fpadMap.get(key))) throw new IllegalArgumentException("Distribution "+fpadMap.get(key)+" is not in the set of configured distributions (or this was passed incorrectly to the loader of this ConsumerAgentGroup!!\nPlease provide valid data!!");
             else fpad.put(fpd.get(key), (BooleanDistribution) distributions.get(fpadMap.get(key)));
         }
