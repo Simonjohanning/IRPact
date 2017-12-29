@@ -1,6 +1,11 @@
 package IRPact_modellierung.messaging;
 
+import IRPact_modellierung.agents.Agent;
+import IRPact_modellierung.agents.consumerAgents.ConsumerAgent;
 import IRPact_modellierung.distributions.UnivariateDistribution;
+import IRPact_modellierung.simulation.SimulationContainer;
+
+import java.util.Set;
 
 /**
  * Class representing an abstraction of message schemes originating from consumer agents.
@@ -19,5 +24,12 @@ public abstract class ConsumerAgentMessageScheme extends MessageScheme {
 
     public UnivariateDistribution getNumberMessagesPerTimeUnit() {
         return numberMessagesPerTimeUnit;
+    }
+
+    public abstract Set<Message> createMessages(SimulationContainer simulationContainer, ConsumerAgent sendingAgent);
+
+    public Set<Message> createMessages(SimulationContainer simulationContainer, Agent sendingAgent) {
+        if(ConsumerAgent.class.isAssignableFrom(sendingAgent.getClass())) return createMessages(simulationContainer, (ConsumerAgent) sendingAgent);
+        else throw new IllegalArgumentException("Consumer Agent Message Scheme needs to get an agent of type ConsumerAgent, but is "+sendingAgent.getClass().getSimpleName()+"!!");
     }
 }

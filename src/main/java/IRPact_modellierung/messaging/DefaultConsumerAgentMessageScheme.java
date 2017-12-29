@@ -50,7 +50,7 @@ public class DefaultConsumerAgentMessageScheme extends ConsumerAgentMessageSchem
      * @param sendingAgent The agent from whom the messages originate
      * @return A set of ConsumerConsumer messages communicating from the sending agent to the receiving agent
      */
-    public Set<Message> createMessages(SimulationContainer simulationContainer, Agent sendingAgent) {
+    public Set<Message> createMessages(SimulationContainer simulationContainer, ConsumerAgent sendingAgent) {
         ConsumerAgent sender = (ConsumerAgent) sendingAgent;
         int noMessagesToSend = (int) (Math.floor(numberMessagesPerTimeUnit.draw()));
         fooLog.debug("Creating {} messages for {} with {} potential receivers",noMessagesToSend, sendingAgent, simulationContainer.getSocialNetwork().getSocialGraph().getNeighbours(sender.getCorrespondingNodeInSN()).size());
@@ -76,9 +76,9 @@ public class DefaultConsumerAgentMessageScheme extends ConsumerAgentMessageSchem
                         String messageType = decideForMessageType();
                         if (messageType.equals("PreferenceMessage")) {
                             Preference preferenceConcerned = decideForPreference(simulationContainer.getValuesUsed(), sender.getPreferences());
-                            messagesToSend.add(new ConsumerConsumerPreferenceManipulationMessage(sender, targetAgent, preferenceConcerned, simulationContainer.getSimulationConfiguration().getPreferenceConfiguration().getPreferenceHomogenizingFactor(), correspondingEdge.getEdgeWeight()));
+                            messagesToSend.add(new ConsumerConsumerPreferenceManipulationMessage(sender, targetAgent, preferenceConcerned, simulationContainer.getSimulationConfiguration().getPreferenceConfiguration().getPreferenceHomogenizingFactor()));
                         } else if (messageType.equals("ProductAttributeMessage")) {
-                            messagesToSend.add(new ConsumerConsumerPerceptionManipulationMessage(sender, targetAgent, decideForProductAttribute(productConcerned.getProductAttributes()), productConcerned, correspondingEdge.getEdgeWeight()));
+                            messagesToSend.add(new ConsumerConsumerPerceptionManipulationMessage(sender, targetAgent, decideForProductAttribute(productConcerned.getProductAttributes()), productConcerned));
                         } else {
                             fooLog.info("ERROR!!! The message type {} is not implemented!!!", messageType);
                         }
@@ -107,4 +107,5 @@ public class DefaultConsumerAgentMessageScheme extends ConsumerAgentMessageSchem
         int attributeIndex = (int) Math.floor(Math.random()*potentialValue.size());
         return preferenceMap.get(valueList.get(attributeIndex));
     }
+
 }
