@@ -47,7 +47,7 @@ public class ConfigLoader {
         try{
             Set<Distribution> distributions = loadDistributions(configPath);
             Map<String, Distribution> distributionMap = StructureEnricher.attachDistributionNames(distributions);
-            Set<Value> values = loadValues(configPath);
+            Set<Value> values = new HashSet<>(); // loadValues(configPath);
 
             DecisionConfiguration decisionConfiguration = DecisionLoader.loadDecisionModel(configPath);;
             ProductConfiguration productConfiguration = ProductLoader.loadProductConfiguration(configPath, distributionMap, decisionConfiguration);;
@@ -68,37 +68,37 @@ public class ConfigLoader {
         }
     }
 
-    private static Set<Value> loadValues(String configPath) throws IllegalArgumentException, IOException{
-        Set<Value> values = new HashSet<>();
-        Set<String> valueNames = new HashSet<>();
-        ObjectMapper mapper = new ObjectMapper();
-        File folder = new File(configPath + "consumerAgentGroups");
-        //load all files in the consumerAgentGroups folder
-        File[] listOfFiles = folder.listFiles();
-        for (File file : listOfFiles) {
-            if (file.isFile()) {
-                try {
-                    HashMap<String, Object> consumerAgentGroupMap = mapper.readValue(file, HashMap.class);
-                    if (!consumerAgentGroupMap.containsKey("consumerAgentGroupValues"))
-                        throw new IllegalArgumentException("ConsumerAgentGroup coded in " + file.getName() + " has no values. Please check the configuration!");
-                    ArrayList<HashMap<String, Object>> valueMap = (ArrayList<HashMap<String, Object>>) consumerAgentGroupMap.get("consumerAgentGroupValues");
-                    Iterator<HashMap<String, Object>> valueMapIterator = valueMap.iterator();
-                    while (valueMapIterator.hasNext()) {
-                        HashMap<String, Object> currentValue = valueMapIterator.next();
-                        if (!currentValue.containsKey("value"))
-                            throw new IllegalArgumentException("Value is not associated with a value!");
-                        valueNames.add((String) currentValue.get("value"));
-                    }
-                } catch (IOException ioe) {
-                    throw ioe;
-                }
-            }
-        }
-        for (String valueName : valueNames) {
-            values.add(new Value(valueName));
-        }
-        return values;
-    }
+//    private static Set<Value> loadValues(String configPath) throws IllegalArgumentException, IOException{
+//        Set<Value> values = new HashSet<>();
+//        Set<String> valueNames = new HashSet<>();
+//        ObjectMapper mapper = new ObjectMapper();
+//        File folder = new File(configPath + "consumerAgentGroups");
+//        //load all files in the consumerAgentGroups folder
+//        File[] listOfFiles = folder.listFiles();
+//        for (File file : listOfFiles) {
+//            if (file.isFile()) {
+//                try {
+//                    HashMap<String, Object> consumerAgentGroupMap = mapper.readValue(file, HashMap.class);
+//                    if (!consumerAgentGroupMap.containsKey("consumerAgentGroupValues"))
+//                        throw new IllegalArgumentException("ConsumerAgentGroup coded in " + file.getName() + " has no values. Please check the configuration!");
+//                    ArrayList<HashMap<String, Object>> valueMap = (ArrayList<HashMap<String, Object>>) consumerAgentGroupMap.get("consumerAgentGroupValues");
+//                    Iterator<HashMap<String, Object>> valueMapIterator = valueMap.iterator();
+//                    while (valueMapIterator.hasNext()) {
+//                        HashMap<String, Object> currentValue = valueMapIterator.next();
+//                        if (!currentValue.containsKey("value"))
+//                            throw new IllegalArgumentException("Value is not associated with a value!");
+//                        valueNames.add((String) currentValue.get("value"));
+//                    }
+//                } catch (IOException ioe) {
+//                    throw ioe;
+//                }
+//            }
+//        }
+//        for (String valueName : valueNames) {
+//            values.add(new Value(valueName));
+//        }
+//        return values;
+//    }
 
     private static InformationScheme loadInformationScheme(String configPath, Map<String, Distribution> distributionMap) throws IllegalArgumentException, IOException{
         ObjectMapper mapper = new ObjectMapper();
