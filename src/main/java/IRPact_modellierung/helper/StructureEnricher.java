@@ -147,7 +147,7 @@ public class StructureEnricher {
      * @throws IllegalArgumentException Will be thrown if the set of Values is empty or one of them doesnt have a name
      */
     public static HashMap<String, Value> attachValueNames(Set<Value> values) {
-        if(values.isEmpty()) throw new IllegalArgumentException("The set of Values to attach their names to is empty!!");
+        //if(values.isEmpty()) throw new IllegalArgumentException("The set of Values to attach their names to is empty!!");
         HashMap<String, Value> returnMap = new HashMap<String, Value>(values.size());
         for(Value value : values){
             if(value.getName().equals("")) throw new IllegalArgumentException("The name of Values "+value+" is empty!! Value should always be given a name!!");
