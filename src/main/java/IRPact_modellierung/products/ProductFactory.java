@@ -31,8 +31,9 @@ public class ProductFactory {
 	 * @param configuration The configuration of the simulation
 	 * @param simulationContainer The container the products are to be associated with
 	 * @return The product instances belonging to the respective productGroup
+	 * @throws IllegalArgumentException Will be thrown when the product groups to create products of has no lifetime distribution set
 	 */
-	public static Set<Product> createProducts(ProductGroup productGroup, Configuration configuration, SimulationContainer simulationContainer) {
+	public static Set<Product> createProducts(ProductGroup productGroup, Configuration configuration, SimulationContainer simulationContainer) throws IllegalArgumentException{
 		HashSet<Product> products = new HashSet<Product>();
 		//instantiate stochastic products
 		for(int index=0; index<configuration.getProductConfiguration().getNoProductsPerGroup().get(productGroup); index++){
@@ -42,6 +43,7 @@ public class ProductFactory {
 				productAttributes.add(new ProductAttribute(pga.getValue().draw(), pga));
 			}
 			String productName = productGroup.getGroupName()+"_"+index;
+			if(productGroup.getProductLifetimeDistribution() == null) throw new IllegalArgumentException("Product group "+productGroup.getGroupName()+" has no product lifetime distribution associated to it!!");
 			products.add(new Product(simulationContainer, productAttributes, true, productGroup, productName, productGroup.getProductLifetimeDistribution()));
 		}
 		fooLog.debug("Attempting to create fixed products for product group {}", productGroup.getGroupName());
