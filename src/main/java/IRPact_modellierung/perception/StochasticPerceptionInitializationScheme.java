@@ -36,9 +36,11 @@ public class StochasticPerceptionInitializationScheme extends PerceptionInitiali
      * @param correspondingProductAttribute the ProductAttribute the perception relates to
      * @param associatedAgentGroup the ConsumerAgentGroup of the agents that perceive the product
      * @param configuration the Configuration of the simulation
-     * @return
+     * @return The initialization value based on the BoundedUnivariateDistribution associated with this scheme
+     * @throws IllegalStateException Will be thrown when the initial distribution is not set
      */
-    public double determineInitialValue(ProductAttribute correspondingProductAttribute, ConsumerAgentGroup associatedAgentGroup, Configuration configuration){
+    public double determineInitialValue(ProductAttribute correspondingProductAttribute, ConsumerAgentGroup associatedAgentGroup, Configuration configuration) throws IllegalStateException{
+        if(initializationDistribution == null) throw new IllegalStateException("The initial distribution is not set!!");
         return initializationDistribution.draw();
     }
 }
