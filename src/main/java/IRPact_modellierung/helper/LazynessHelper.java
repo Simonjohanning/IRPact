@@ -817,7 +817,7 @@ public class LazynessHelper {
      * @throws IllegalArgumentException Will be thrown when the number of consumers is non-positive
      */
     public static Map<Integer,Set<FixedProductDescription>> determineInitiallyAdoptedProducts(int numberOfConsumers, Map<FixedProductDescription, UnivariateDistribution> initialProductConfiguration) throws IllegalArgumentException{
-        if(numberOfConsumers < 1) throw new IllegalArgumentException("An illegal number of consumers ("+numberOfConsumers+") was used to determine the initial adoptiion of products!!");
+        if(numberOfConsumers < 1) throw new IllegalArgumentException("An illegal number of consumers ("+numberOfConsumers+") was used to determine the initial adoption of products!!");
         Map<Integer, Set<FixedProductDescription>> initiallyAdoptedProductsByAgentIndex = new HashMap<Integer, Set<FixedProductDescription>>(numberOfConsumers);
         //Map to determine how many agents adopt a certain product (these will be distributed among the agents)
         Map<FixedProductDescription, Integer> numInitialAdoptersPerProduct = new HashMap<FixedProductDescription, Integer>(initialProductConfiguration.keySet().size());
@@ -837,11 +837,14 @@ public class LazynessHelper {
                     if(!(nonAdopterIndices.contains(currentIndex))) initiallyAdoptedProductsByAgentIndex.get(currentIndex).add(fpd);
                 }
             }else{
-                Set<Integer> adopterIndices = deriveAdopters(numInitialAdoptersPerProduct.get(fpd), numberOfConsumers);
-                //check for every customer if it is an adopter
-                for(Integer currentIndex : adopterIndices){
-                    initiallyAdoptedProductsByAgentIndex.get(currentIndex).add(fpd);
+                if(numInitialAdoptersPerProduct.get(fpd) > 0){
+                    Set<Integer> adopterIndices = deriveAdopters(numInitialAdoptersPerProduct.get(fpd), numberOfConsumers);
+                    //check for every customer if it is an adopter
+                    for(Integer currentIndex : adopterIndices){
+                        initiallyAdoptedProductsByAgentIndex.get(currentIndex).add(fpd);
+                    }
                 }
+                initiallyAdoptedProductsByAgentIndex.put(0, new HashSet<FixedProductDescription>());
             }
         }
         return initiallyAdoptedProductsByAgentIndex;
@@ -859,7 +862,7 @@ public class LazynessHelper {
      */
     private static Set<Integer> deriveAdopters(int numberIndicesToFind, int numberOfConsumers){
         if(numberIndicesToFind > numberOfConsumers) throw new IllegalArgumentException("Numbers to draw without repetition is larger than the set of numbers to draw from!! This would result in an infinite loop!!");
-        else if(numberIndicesToFind < 1) throw new IllegalArgumentException("number of integers to find is negative; doesn't make sense!!");
+        else if(numberIndicesToFind < 1) throw new IllegalArgumentException("number of integers to find is non-positive; doesn't make sense!!");
         else if(numberOfConsumers < 1) throw new IllegalArgumentException("Numbers to draw from is non-positive; doesn't make sense!!");
         else{
             Set<Integer> derivedIndices = new HashSet<Integer>(numberIndicesToFind);
