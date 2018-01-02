@@ -7,8 +7,10 @@ import IRPact_modellierung.preference.Value;
 import IRPact_modellierung.needs.Need;
 import IRPact_modellierung.products.*;
 import IRPact_modellierung.simulation.SimulationContainer;
+import org.apache.commons.lang3.ArrayUtils;
 
 import java.awt.geom.Point2D;
+import java.lang.reflect.Array;
 import java.util.*;
 
 /**
@@ -204,6 +206,54 @@ public class ValueConversionHelper {
             returnMap.put(cagMap.get(cagName), consumerGroupIntegerMapping.get(cagName));
         }
         return returnMap;
+    }
+
+    /**
+     * Helper method to cast an ArrayList of doubles to an array of double primitives
+     * (via the primitive type).
+     *
+     * @param meansList The ArrayList to cast to the array
+     * @return A double array with the entries of the array list
+     */
+    public static double[] arrayListToArray(ArrayList<Double> meansList) {
+        Double[] meansPrimitiveTypeArray = new Double[meansList.size()];
+        meansList.toArray(meansPrimitiveTypeArray);
+        return ArrayUtils.toPrimitive(meansPrimitiveTypeArray);
+    }
+
+    /**
+     * Helper method to cast an ArrayList of ArrayLists of doubles to a (2-dim) array of double primitives
+     * (via the primitive type, and the one-dimensional version of this method).
+     *
+     * @param meansList The ArrayList to cast to the array
+     * @return A double array with the entries of the array list
+     */
+    public static double[][] arrayListToArray2D(ArrayList<ArrayList<Double>> meansList) {
+        double[][] returnArray = new double[meansList.size()][];
+        Iterator<ArrayList<Double>> outerListIterator = meansList.iterator();
+        int currentIndex = 0;
+        while(outerListIterator.hasNext()){
+            returnArray[currentIndex] = arrayListToArray(outerListIterator.next());
+//            System.out.println(Arrays.toString(returnArray[currentIndex]));
+            currentIndex++;
+        }
+//        System.out.println(Arrays.toString(returnArray));
+        return returnArray;
+    }
+
+    /**
+     * Method to extract an ArrayList of Doubles within an ArrayList and put them together
+     *
+     * @param outerList An array list containing Objects that can be cast to Double lists themselves
+     * @return An Array List containing the ArrayLists (of Doubles) contained in the Objects of the argument Array List
+     */
+    public static ArrayList<ArrayList<Double>> extractInnerDoubleList(ArrayList<Object> outerList) {
+        ArrayList<ArrayList<Double>> returnList = new ArrayList<>();
+        Iterator<Object> listIterator = outerList.listIterator();
+        while(listIterator.hasNext()){
+            returnList.add((ArrayList<Double>) listIterator.next());
+        }
+        return returnList;
     }
 
     /*public static Product marketIntroductionEventToProduct(MarketIntroductionEvent event, SimulationContainer simulationContainer){

@@ -1,6 +1,7 @@
 package IRPact_modellierung.distributions;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import org.apache.commons.math3.distribution.MultivariateNormalDistribution;
 
@@ -29,10 +30,15 @@ public class MultivNormalDistribution extends MultivariateDistribution {
      */
     public MultivNormalDistribution(String name, double[] means, double[][] covariances) throws IllegalArgumentException{
         super(name, means.length);
+        if(means == null) throw new IllegalArgumentException("Means of MultivNormalDistribution "+name+" is null!!\nMake sure to provide a valid configuration!!");
+        else if(covariances == null) throw new IllegalArgumentException("Covariances of MultivNormalDistribution "+name+" is null!!\nMake sure to provide a valid configuration!!");
         int meansDim = means.length;
         if(covariances.length != meansDim) throw new IllegalArgumentException("dimensions of means and covariances doen't coincide!! dim(means)="+meansDim+", dim(covj)="+covariances.length);
+//        System.out.println(Arrays.toString(means));
+//        System.out.println(Arrays.toString(covariances));
         for(int i=0;i<meansDim;i++){
-            if(covariances[i].length != meansDim) throw new IllegalArgumentException("dimensions of means and covariances doen't coincide!! dim(means)="+meansDim+", dim(cov,"+i+")="+covariances[i].length);
+            if(covariances[i] == null) throw new IllegalArgumentException("Covariances of index "+i+" of MultivNormalDistribution "+name+" is null!!\nMake sure to provide a valid configuration!!");
+            else if(covariances[i].length != meansDim) throw new IllegalArgumentException("dimensions of means and covariances doen't coincide!! dim(means)="+meansDim+", dim(cov,"+i+")="+covariances[i].length);
         }
         this.means = means;
         this.covariances = covariances;

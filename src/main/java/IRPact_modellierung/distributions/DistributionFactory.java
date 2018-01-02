@@ -1,8 +1,11 @@
 package IRPact_modellierung.distributions;
 
+import IRPact_modellierung.helper.ValueConversionHelper;
+import org.apache.commons.lang3.ArrayUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -18,8 +21,6 @@ import java.util.Map;
 public class DistributionFactory {
 
     private static final Logger fooLog = LogManager.getLogger("debugConsoleLogger");
-
-    //TODO Fix Continuous / Spatial distribution!!!!
 
     /**
      * Method to generate instances of distributions.
@@ -63,8 +64,12 @@ public class DistributionFactory {
                         throw cce;
                     }
                 }
-            case "ContSpatialDistribution":
-                return new ContinuousSpatialDistribution(name, loadContinuousSpatialDistribution(parameters));
+            case "DefaultSpatialDistribution" :
+                try{
+                    return new DefaultSpatialDistribution(name, loadMultivariateDistribution(parameters, name));
+                } catch (Exception e){
+                    throw e;
+                }
             default: throw new IllegalArgumentException("WARNING!!! distribution "+distribution+" not implemented!!!");
         }
     }
@@ -73,6 +78,44 @@ public class DistributionFactory {
         switch((String) parameters.get("type")){
             case "NormalDistribution" : return new NormDistribution("fooNorm", (double) parameters.get("mean"), (double) parameters.get("variance"));
             default: throw new IllegalArgumentException("parameters contains invalid type "+parameters.get("type"));
+        }
+    }
+
+    private static MultivariateDistribution loadMultivariateDistribution(Map<String, Object> parameters, String context){
+        if(!parameters.containsKey("type")) throw new IllegalStateException("No type for a multivariate distribution specified for distribution "+context);
+        else{
+            switch ((String) parameters.get("type")){
+                case "MultivNormalDistribution" :
+                    if(!parameters.containsKey("parameters")) throw new IllegalArgumentException("No parameters set for Multivariate distribution of type MultivNormalDistribution in context "+context+"!!");
+                    else{
+                        try {
+                            return loadMultivNormalDistribution((Map<String, Object>) parameters.get("parameters"));
+                        } catch (IllegalArgumentException iae) {
+                            throw iae;
+                        } catch (Exception e){
+                            throw e;
+                        }
+                    }
+                default: throw new IllegalArgumentException("Multivariate distribution "+(String) parameters.get("type")+" not implemented!!\nPlease consider implementing it yourself or provide a valid type!!");
+            }
+        }
+    }
+
+    /**
+     * Method to load a MultivNormalDistribution from a set of parameters (means and covariances)
+     *
+     * @param parameters Parameter map for the MultivNormalDistribution to create. Needs to contain an entry for means and covariances
+     * @return A MultivNormalDistribution according to the given parameters (if valid)
+     * @throws IllegalArgumentException Will be thrown when the parameters do not contain the means and covariances key
+     */
+    private static MultivNormalDistribution loadMultivNormalDistribution(Map<String, Object> parameters) throws IllegalArgumentException{
+        if(!parameters.containsKey("means")) throw new IllegalArgumentException("Parameter map for the MultivNormalDistribution does not contain the entry 'means'. Please make sure to provide a valid configuration!!");
+        else if(!parameters.containsKey("covariances")) throw new IllegalArgumentException("Parameter map for the MultivNormalDistribution does not contain the entry 'covariances'. Please make sure to provide a valid configuration!!");
+        else{
+            String name;
+            if(parameters.containsKey("name")) name = (String) parameters.get("name");
+            else name = "GenericMultivNormalDistribution";
+            return new MultivNormalDistribution(name, ValueConversionHelper.arrayListToArray((ArrayList<Double>) parameters.get("means")), ValueConversionHelper.arrayListToArray2D(ValueConversionHelper.extractInnerDoubleList((ArrayList<Object>) parameters.get("covariances"))));
         }
     }
 

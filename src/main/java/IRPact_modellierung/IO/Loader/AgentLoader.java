@@ -235,9 +235,11 @@ public class AgentLoader {
             HashMap<String, Object> companyAgentGroupMap = mapper.readValue(file, HashMap.class);
             String[] fileNameArray = file.getName().split("\\.");
             if(!companyAgentGroupMap.containsKey("productQualityManipulationScheme")) throw new IllegalArgumentException("Company agent "+fileNameArray[0]+" doesn't have a value for the productQualityManipulationScheme!!");
-            ProductQualityManipulationScheme productQualityManipulationScheme = CompanyAgentFactory.productQualityManipulationSchemeLoader((String) companyAgentGroupMap.get("productQualityManipulationScheme"));
+            else if(!companyAgentGroupMap.containsKey("productQualityManipulationSchemeParameters")) throw new IllegalArgumentException("Company agent configuration in "+file+" doesn't contain the productQualityManipulationSchemeParameters.\nPlease provide a valid configuration!");
+            ProductQualityManipulationScheme productQualityManipulationScheme = CompanyAgentFactory.productQualityManipulationSchemeLoader((String) companyAgentGroupMap.get("productQualityManipulationScheme"), (HashMap<String, Object>) companyAgentGroupMap.get("productQualityManipulationSchemeParameters"));
             if(!companyAgentGroupMap.containsKey("managementDecisionScheme")) throw new IllegalArgumentException("Company agent "+fileNameArray[0]+" doesn't have a value for the managementDecisionScheme!!");
-            ManagementDecisionScheme managementDecisionSchemeScheme = CompanyAgentFactory.managementDecisionSchemeLoader((String) companyAgentGroupMap.get("managementDecisionScheme"));
+            else if(!companyAgentGroupMap.containsKey("managementDecisionSchemeParameters")) throw new IllegalArgumentException("Company agent configuration in "+file+" doesn't contain the managementDecisionSchemeParameters.\nPlease provide a valid configuration!");
+            ManagementDecisionScheme managementDecisionSchemeScheme = CompanyAgentFactory.managementDecisionSchemeLoader((String) companyAgentGroupMap.get("managementDecisionScheme"), (HashMap<String, Object>) companyAgentGroupMap.get("managementDecisionSchemeParameters"));
             AdvertisementScheme advertisementScheme;
             if(!companyAgentGroupMap.containsKey("advertisementScheme")) throw new IllegalArgumentException("Company agent configuration in "+file+" doesn't contain the advertisementScheme.\nPlease provide a valid configuration!");
             else if(!companyAgentGroupMap.containsKey("advertisementSchemeParameters")) throw new IllegalArgumentException("Company agent configuration in "+file+" doesn't contain the advertisementSchemeParameters.\nPlease provide a valid configuration!");
