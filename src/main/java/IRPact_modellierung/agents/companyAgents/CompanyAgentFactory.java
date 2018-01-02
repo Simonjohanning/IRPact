@@ -85,10 +85,11 @@ public class CompanyAgentFactory {
      * If not it will raise the respective IllegalArgumentException.
      *
      * @param productQualityManipulationSchemeQualifier A String corresponding to the ProductManipulationScheme to be loaded
+     * @param productQualityManipulationSchemeParameters The parameters associated with the ProductManipulationScheme
      * @return An instance of the ProductManipulationScheme specified by the ProductManipulationSchemeQualifier
      * @throws IllegalArgumentException will be thrown when the ProductManipulationSchemeQualifier refers to an unimplemented scheme
      */
-    public static ProductQualityManipulationScheme productQualityManipulationSchemeLoader(String productQualityManipulationSchemeQualifier) throws IllegalArgumentException{
+    public static ProductQualityManipulationScheme productQualityManipulationSchemeLoader(String productQualityManipulationSchemeQualifier, HashMap<String, Object> productQualityManipulationSchemeParameters) throws IllegalArgumentException{
         switch(productQualityManipulationSchemeQualifier) {
             case "DefaultProductQualityManipulationScheme":
                 return new DefaultProductQualityManipulationScheme();
@@ -103,10 +104,11 @@ public class CompanyAgentFactory {
      * If not it will raise the respective IllegalArgumentException.
      *
      * @param managementDecisionSchemeQualifier A String corresponding to the ManagementDecisionScheme to be loaded
+     * @param managementDecisionSchemeParameters The parameters associated with the ManagementDecisionScheme
      * @return An instance of the ManagementDecisionScheme specified by the managementDecisionSchemeQualifier
      * @throws IllegalArgumentException will be thrown when the managementDecisionSchemeQualifier refers to an unimplemented scheme
      */
-    public static ManagementDecisionScheme managementDecisionSchemeLoader(String managementDecisionSchemeQualifier) throws IllegalArgumentException{
+    public static ManagementDecisionScheme managementDecisionSchemeLoader(String managementDecisionSchemeQualifier, HashMap<String, Object> managementDecisionSchemeParameters) throws IllegalArgumentException{
         switch(managementDecisionSchemeQualifier) {
             case "DefaultManagementDecisionScheme":
                 return new DefaultManagementDecisionScheme();
