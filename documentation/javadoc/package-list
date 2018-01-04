@@ -1,8 +1,8 @@
 IRPact_modellierung
-IRPact_modellierung.IO
-IRPact_modellierung.IO.Loader
-IRPact_modellierung.IO.Output
-IRPact_modellierung.IO.SQLiteHandling
+IRPact_modellierung.io
+IRPact_modellierung.io.loader
+IRPact_modellierung.io.output
+IRPact_modellierung.io.sQLiteHandling
 IRPact_modellierung.agents
 IRPact_modellierung.agents.companyAgents
 IRPact_modellierung.agents.companyAgents.advertisement
