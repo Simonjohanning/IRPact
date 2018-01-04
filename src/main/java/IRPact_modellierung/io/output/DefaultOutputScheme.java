@@ -1,4 +1,4 @@
-package IRPact_modellierung.IO.Output;
+package IRPact_modellierung.io.output;
 
 import IRPact_modellierung.agents.consumerAgents.ConsumerAgent;
 import IRPact_modellierung.helper.LazynessHelper;

@@ -1,7 +1,7 @@
 package IRPact_modellierung.time;
 
-import IRPact_modellierung.IO.Output.DefaultOutputScheme;
-import IRPact_modellierung.IO.Output.OutputScheme;
+import IRPact_modellierung.io.output.DefaultOutputScheme;
+import IRPact_modellierung.io.output.OutputScheme;
 import IRPact_modellierung.SimulationEntity;
 import IRPact_modellierung.processModel.ProcessModel;
 import IRPact_modellierung.simulation.SimulationContainer;

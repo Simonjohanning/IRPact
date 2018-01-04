@@ -114,6 +114,18 @@ public class SynchronousConsumerAgentFactory {
 			//set agents id as consumergroup_index
 			String agentID = correspondingConsumerAgentGroup.getGroupName()+"_agent_"+agentBatchNumber+"_"+String.valueOf(index);
 			//instantiate agent based on previously prepared information
+			//fooLog.info("simulationContainer: {} \n, attributes: {} \n, preferences: {} \n, associatedSNNode: {} \n, initiallyAdoptedProducts: {} \n, perceivedProductAttributeValues: {} \n, productAwarenessMap: {} \n, correspondingConsumerAgentGroup : {} \n, dec process: {} \n, spac. distr. : {} \n, ID: {} \n ", simulationContainer, attributes, consumerPreferences, associatedSNNode, initiallyAdoptedProducts.get(index), perceivedProductAttributeValues, productAwarenessMap, correspondingConsumerAgentGroup, correspondingConsumerAgentGroup.getDecisionProcessEmployed(), correspondingConsumerAgentGroup.getSpatialDistribution().draw(simulationContainer.getSpatialModel()), agentID);
+			fooLog.debug("simulationContainer {} ",simulationContainer);
+			fooLog.debug("attr {} ",attributes);
+			fooLog.debug("pref: {} ",consumerPreferences);
+			fooLog.debug("snNode: {}", associatedSNNode);
+			fooLog.debug("adop prod: {}",initiallyAdoptedProducts.get(index));
+			fooLog.debug("percPAVs: {}",perceivedProductAttributeValues);
+			fooLog.debug("paw: {}", productAwarenessMap);
+			fooLog.debug("cag: {}",correspondingConsumerAgentGroup);
+			fooLog.debug("dec. proc. : {}",correspondingConsumerAgentGroup.getDecisionProcessEmployed());
+			fooLog.debug("spact: {}",correspondingConsumerAgentGroup.getSpatialDistribution().draw(simulationContainer.getSpatialModel()));
+			fooLog.debug("id: {}",agentID);
 			SynchronousConsumerAgent instantiatedAgent = new SynchronousConsumerAgent(simulationContainer, attributes, consumerPreferences, associatedSNNode, initiallyAdoptedProducts.get(index), perceivedProductAttributeValues, productAwarenessMap, correspondingConsumerAgentGroup, correspondingConsumerAgentGroup.getDecisionProcessEmployed(), correspondingConsumerAgentGroup.getSpatialDistribution().draw(simulationContainer.getSpatialModel()), agentID);
 			simulationContainer.addSNNodeConsumerAgentMapping(associatedSNNode, instantiatedAgent);
 			agents.add(instantiatedAgent);

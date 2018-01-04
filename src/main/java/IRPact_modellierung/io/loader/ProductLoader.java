@@ -1,4 +1,4 @@
-package IRPact_modellierung.IO.Loader;
+package IRPact_modellierung.io.loader;
 
 import IRPact_modellierung.decision.ConsumerAgentAdoptionDecisionProcess;
 import IRPact_modellierung.decision.DecisionConfiguration;

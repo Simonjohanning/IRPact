@@ -1,6 +1,5 @@
-package IRPact_modellierung.IO.Loader;
+package IRPact_modellierung.io.loader;
 
-import IRPact_modellierung.agents.consumerAgents.ConsumerAgentGroup;
 import IRPact_modellierung.decision.*;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;

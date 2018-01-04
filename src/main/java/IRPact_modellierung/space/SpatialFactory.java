@@ -1,6 +1,6 @@
 package IRPact_modellierung.space;
 
-import IRPact_modellierung.IO.Loader.SpaceLoader;
+import IRPact_modellierung.io.loader.SpaceLoader;
 import IRPact_modellierung.simulation.SimulationContainer;
 
 import java.util.ArrayList;

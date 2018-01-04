@@ -1,9 +1,8 @@
-package IRPact_modellierung.IO.Output;
+package IRPact_modellierung.io.output;
 
 import IRPact_modellierung.agents.consumerAgents.ConsumerAgent;
 import IRPact_modellierung.agents.consumerAgents.ConsumerAgentGroup;
 import IRPact_modellierung.products.AdoptedProduct;
-import IRPact_modellierung.products.Product;
 import IRPact_modellierung.products.ProductGroup;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;

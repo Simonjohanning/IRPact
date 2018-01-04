@@ -1,4 +1,4 @@
-package IRPact_modellierung.IO.Output;
+package IRPact_modellierung.io.output;
 
 import IRPact_modellierung.agents.consumerAgents.ConsumerAgent;
 import IRPact_modellierung.agents.consumerAgents.ConsumerAgentGroup;
@@ -14,11 +14,11 @@ import java.util.Set;
 /**
  * Created by Lenovo on 23.08.2016.
  */
-public class N7OutputScheme extends OutputScheme {
+public class N4OutputScheme extends OutputScheme {
 
     private static final org.apache.logging.log4j.Logger fooLog = LogManager.getLogger("debugConsoleLogger");
 
-    public N7OutputScheme() {
+    public N4OutputScheme() {
     }
 
     public void writeConsumerAgentState(ConsumerAgent consumerAgent, double timeStamp) {
@@ -43,11 +43,9 @@ public class N7OutputScheme extends OutputScheme {
         for (ConsumerAgentGroup cag : randomDude.getAssociatedSimulationContainer().getSimulationConfiguration().getAgentConfiguration().getConsumerAgentGroups()) {
             Map<Product, Integer> productGroupMap = new HashMap<Product, Integer>();
             for (Product product : randomDude.getAssociatedSimulationContainer().getProducts()){
-                fooLog.debug("Setting up productGroupMap for product {}", product.getName());
                 productGroupMap.put(product, 0);
             }
             for (Product product : randomDude.getAssociatedSimulationContainer().getHistoricalProducts()){
-                fooLog.debug("Setting up productGroupMap for product {}", product.getName());
                 productGroupMap.put(product, 0);
             }
             adoptersPerCAGperProduct.put(cag, productGroupMap);
@@ -55,10 +53,11 @@ public class N7OutputScheme extends OutputScheme {
         for (ConsumerAgent currentAgent : consumerAgents) {
             Map<Product, Integer> productMap = adoptersPerCAGperProduct.get(currentAgent.getCorrespondingConsumerAgentGroup());
             for (AdoptedProduct adoptedProduct : currentAgent.getAdoptedProducts()) {
-                Integer adoptersBefore = productMap.get(adoptedProduct.getCorrespondingProduct());
                 adoptersPerCAGperProduct.get(currentAgent.getCorrespondingConsumerAgentGroup()).remove(productMap);
-                fooLog.debug("Integer {}, product {}, in market? {}", adoptersBefore, adoptedProduct.getCorrespondingProduct().getName(), adoptedProduct.getCorrespondingProduct().isIntroducedToMarket());
-                adoptersPerCAGperProduct.get(currentAgent.getCorrespondingConsumerAgentGroup()).put(adoptedProduct.getCorrespondingProduct(), adoptersBefore + 1);
+                fooLog.debug("Adopted product of {} is {}", currentAgent, adoptedProduct);
+                fooLog.debug("which correponds to {}",adoptedProduct.getCorrespondingProduct());
+                fooLog.debug("adoptersPerCAGperProduct is {}, and at the respective cag {}",adoptersPerCAGperProduct, adoptersPerCAGperProduct.get(currentAgent.getCorrespondingConsumerAgentGroup()));
+                adoptersPerCAGperProduct.get(currentAgent.getCorrespondingConsumerAgentGroup()).put(adoptedProduct.getCorrespondingProduct(), productMap.get(adoptedProduct.getCorrespondingProduct()) + 1);
             }
         }
         return adoptersPerCAGperProduct;

@@ -1,6 +1,6 @@
-package IRPact_modellierung.IO;
+package IRPact_modellierung.io;
 
-import IRPact_modellierung.IO.Loader.*;
+import IRPact_modellierung.io.loader.*;
 import IRPact_modellierung.agents.AgentConfiguration;
 import IRPact_modellierung.information.InformationFactory;
 import IRPact_modellierung.information.InformationScheme;

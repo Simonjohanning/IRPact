@@ -1,7 +1,7 @@
 package IRPact_modellierung.simulation;
 
-import IRPact_modellierung.IO.ConfigLoader;
-import IRPact_modellierung.IO.Output.*;
+import IRPact_modellierung.io.ConfigLoader;
+import IRPact_modellierung.io.output.*;
 import org.apache.logging.log4j.LogManager;
 
 import java.io.IOException;

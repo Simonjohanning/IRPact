@@ -174,6 +174,9 @@ public abstract class ConsumerAgent extends SpatialInformationAgent {
 		if(LazynessHelper.getCorrespondingProducts(adoptedProducts).contains(productToAdopt)) throw new IllegalArgumentException("ERROR!!! Agent "+this+"is trying to adopt a product already adopted ("+productToAdopt+"{})!!!");
 		if(productToAdopt == null) throw new IllegalArgumentException("Error!! Agent is trying to adopt a non-existing product (probably using decision process "+ LazynessHelper.getEmployedDecisionProcess(this, null)+")!!");
 		fooLog.debug("Agent {} adopts product {}", getAgentID(), productToAdopt.getName());
+		fooLog.debug(adoptedProducts);
+		fooLog.debug("time: {}",this.associatedSimulationContainer.getTimeModel().getSimulationTime());
+		fooLog.debug("lifetime {} ",productToAdopt.getProductLifetimeDistribution().draw());
 		adoptedProducts.add(new AdoptedProduct(productToAdopt, this, this.associatedSimulationContainer.getTimeModel().getSimulationTime(), productToAdopt.getProductLifetimeDistribution().draw()));
 	}
 

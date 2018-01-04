@@ -1,4 +1,4 @@
-package IRPact_modellierung.IO.SQLiteHandling;
+package IRPact_modellierung.io.sQLiteHandling;
 
 import IRPact_modellierung.agents.consumerAgents.ConsumerAgentGroup;
 import IRPact_modellierung.products.Product;

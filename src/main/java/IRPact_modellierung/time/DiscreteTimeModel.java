@@ -1,7 +1,5 @@
 package IRPact_modellierung.time;
 
-import IRPact_modellierung.IO.Output.DefaultOutputScheme;
-import IRPact_modellierung.IO.Output.OutputScheme;
 import IRPact_modellierung.agents.consumerAgents.ConsumerAgent;
 import IRPact_modellierung.events.DiscreteEventScheduler;
 import IRPact_modellierung.processModel.ProcessModel;
