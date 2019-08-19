@@ -15,7 +15,7 @@ import IRPact_modellierung.simulation.SimulationContainer;
  * @author Simon Johanning
  */
 public abstract class SpatialModel extends SimulationEntity {
-
+	// TODO Make the metric scheme into a class
 	String metric;
 
 	/**
