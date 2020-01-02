@@ -1,0 +1,168 @@
+[
+	{
+		"name" : "noMessageDistribution",
+		"distribution" : "FiniteMassPointsDiscreteDistribution",
+		"parameters" : {
+			"0.0" : 1.0
+		}
+	},
+	{
+		"name" : "diracDistribution0",
+		"distribution" : "FiniteMassPointsDiscreteDistribution",
+		"parameters" : {
+			"0.0" : 1.0
+		}
+	},
+	{
+		"name" : "diracDistribution01",
+		"distribution" : "FiniteMassPointsDiscreteDistribution",
+		"parameters" : {
+			"0.1" : 1.0
+		}
+	},
+	{
+		"name" : "diracDistribution015",
+		"distribution" : "FiniteMassPointsDiscreteDistribution",
+		"parameters" : {
+			"0.15" : 1.0
+		}
+	},
+	{
+		"name" : "diracDistribution02",
+		"distribution" : "FiniteMassPointsDiscreteDistribution",
+		"parameters" : {
+			"0.2" : 1.0
+		}
+	},
+	{
+		"name" : "diracDistribution025",
+		"distribution" : "FiniteMassPointsDiscreteDistribution",
+		"parameters" : {
+			"0.25" : 1.0
+		}
+	},
+	{
+		"name" : "diracDistribution03",
+		"distribution" : "FiniteMassPointsDiscreteDistribution",
+		"parameters" : {
+			"0.3" : 1.0
+		}
+	},
+	{
+		"name" : "diracDistribution035",
+		"distribution" : "FiniteMassPointsDiscreteDistribution",
+		"parameters" : {
+			"0.35" : 1.0
+		}
+	},
+	{
+		"name" : "diracDistribution04",
+		"distribution" : "FiniteMassPointsDiscreteDistribution",
+		"parameters" : {
+			"0.4" : 1.0
+		}
+	},
+	{
+		"name" : "diracDistribution05",
+		"distribution" : "FiniteMassPointsDiscreteDistribution",
+		"parameters" : {
+			"0.5" : 1.0
+		}
+	},
+	{
+		"name" : "diracDistribution1",
+		"distribution" : "FiniteMassPointsDiscreteDistribution",
+		"parameters" : {
+			"1.0" : 1.0
+		}
+	},
+	{
+		"name" : "P1PA1Distribution",
+		"distribution" : "FiniteMassPointsDiscreteDistribution",
+		"parameters" : {
+			"1.0" : 1.0
+		}
+	},
+	{
+		"name" : "P1PA2Distribution",
+		"distribution" : "FiniteMassPointsDiscreteDistribution",
+		"parameters" : {
+			"0.01" : 1.0
+		}
+	},
+	{
+		"name" : "P3PA1Distribution",
+		"distribution" : "FiniteMassPointsDiscreteDistribution",
+		"parameters" : {
+			"0.1" : 1.0
+		}
+	},
+	{
+		"name" : "P3PA2Distribution",
+		"distribution" : "FiniteMassPointsDiscreteDistribution",
+		"parameters" : {
+			"0.1" : 1.0
+		}
+	},
+	{
+		"name" : "uniformlyTrue",
+		"distribution" : "BooleanDistribution",
+		"parameters" : {
+			"true" : 1.0,
+			"false" : 0.0
+		}
+	},
+	{
+		"name" : "uniformlyFalse",
+		"distribution" : "BooleanDistribution",
+		"parameters" : {
+			"true" : 0.0,
+			"false" : 1.0
+		}
+	},
+	{
+		"name" : "dummySpatialDistribution",
+		"distribution" : "DefaultSpatialDistribution",
+		"parameters" : {
+			"type" : "MultivNormalDistribution",
+			"parameters" : {
+				"name" : "dummyMultivNormalDistribution",
+				"means" : [0.5,0.5],
+				"covariances" : [[0.5,0.0],[0.0,0.5]]
+			}
+		}
+	},
+	{
+		"name" : "fooBoundedDistribution",
+		"distribution" : "BurrDistribution2",
+		"parameters" : {
+			"lowerBound" : 0.0,
+			"upperBound" : 5.0,
+			"r" : 2.0
+		}
+	},
+	{
+		"name" : "toiletLifetimeDistribution",
+		"distribution" : "PascalDistribution",
+		"parameters" : {
+			"r" : 1,
+			"p" : 0.003
+		}
+	},
+	{
+		"name" : "showerLifetimeDistribution",
+		"distribution" : "PascalDistribution",
+		"parameters" : {
+			"r" : 1,
+			"p" : 0.004
+		}
+	},
+	{
+		"name" : "rainwaterLifetimeDistribution",
+		"distribution" : "PascalDistribution",
+		"parameters" : {
+			"r" : 1,
+			"p" : 0.0017
+		}
+	}
+]

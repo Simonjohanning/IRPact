@@ -1,0 +1,35 @@
+{
+	"SchwarzTakeTheBest" : {
+		"utilityFunctionEmployed" : "linearPreferenceOriented"
+	},
+	"DeliberateDecision" : {
+		"utilityFunctionEmployed" : "linearPreferenceOriented",
+		"importanceAttitudeMap" : {
+			"SocialLeaders" : {
+				"showerHeads" : 0.75,
+				"rainwaterUsageSystems" : 0.2,
+				"toiletFlushs" : 0.6
+			},
+			"Traditionalists" : {
+				"showerHeads" : 0.75,
+				"rainwaterUsageSystems" : 0.2,
+				"toiletFlushs" : 0.6
+			},
+			"Postmaterialists" : {
+				"showerHeads" : 0.75,
+				"rainwaterUsageSystems" : 0.2,
+				"toiletFlushs" : 0.6
+			},
+			"Mainstream" : {
+				"showerHeads" : 0.75,
+				"rainwaterUsageSystems" : 0.2,
+				"toiletFlushs" : 0.6
+			},
+			"Hedonists" : {
+				"showerHeads" : 0.75,
+				"rainwaterUsageSystems" : 0.2,
+				"toiletFlushs" : 0.6
+			}
+		}
+	}
+}

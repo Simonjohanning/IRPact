@@ -1,0 +1,137 @@
+{
+	"preferenceProductAttributeMapping" : [
+	{
+			"value" : "environmentalism",
+			"productGroupAttribute" : "environmentalism",
+			"mappingStrength" : 1.0
+		},
+		{
+			"value" : "environmentalism",
+			"productGroupAttribute" : "investmentCost",
+			"mappingStrength" : 0.0
+		},
+		{
+			"value" : "environmentalism",
+			"productGroupAttribute" : "simplicity",
+			"mappingStrength" : 0.0
+		},
+		{
+			"value" : "environmentalism",
+			"productGroupAttribute" : "compatibility",
+			"mappingStrength" : 0.0
+		},
+		{
+			"value" : "environmentalism",
+			"productGroupAttribute" : "costEfficiency",
+			"mappingStrength" : 0.0
+		},
+
+
+		{
+			"value" : "simplicity",
+			"productGroupAttribute" : "simplicity",
+			"mappingStrength" : 1.0
+		},
+		{
+			"value" : "simplicity",
+			"productGroupAttribute" : "investmentCost",
+			"mappingStrength" : 0.0
+		},
+		{
+			"value" : "simplicity",
+			"productGroupAttribute" : "environmentalism",
+			"mappingStrength" : 0.0
+		},
+		{
+			"value" : "simplicity",
+			"productGroupAttribute" : "compatibility",
+			"mappingStrength" : 0.0
+		},
+		{
+			"value" : "simplicity",
+			"productGroupAttribute" : "costEfficiency",
+			"mappingStrength" : 0.0
+		},
+
+
+		{
+			"value" : "compatibility",
+			"productGroupAttribute" : "compatibility",
+			"mappingStrength" : 1.0
+		},
+		{
+			"value" : "compatibility",
+			"productGroupAttribute" : "investmentCost",
+			"mappingStrength" : 0.0
+		},
+		{
+			"value" : "compatibility",
+			"productGroupAttribute" : "simplicity",
+			"mappingStrength" : 0.0
+		},
+		{
+			"value" : "compatibility",
+			"productGroupAttribute" : "environmentalism",
+			"mappingStrength" : 0.0
+		},
+		{
+			"value" : "compatibility",
+			"productGroupAttribute" : "costEfficiency",
+			"mappingStrength" : 0.0
+		},
+
+
+		{
+			"value" : "costEfficiency",
+			"productGroupAttribute" : "costEfficiency",
+			"mappingStrength" : 1.0
+		},
+		{
+			"value" : "costEfficiency",
+			"productGroupAttribute" : "investmentCost",
+			"mappingStrength" : 0.0
+		},
+		{
+			"value" : "costEfficiency",
+			"productGroupAttribute" : "simplicity",
+			"mappingStrength" : 0.0
+		},
+		{
+			"value" : "costEfficiency",
+			"productGroupAttribute" : "compatibility",
+			"mappingStrength" : 0.0
+		},
+		{
+			"value" : "costEfficiency",
+			"productGroupAttribute" : "environmentalism",
+			"mappingStrength" : 0.0
+		},
+
+		{
+			"value" : "subjectiveNorm",
+			"productGroupAttribute" : "environmentalism",
+			"mappingStrength" : 0.0
+		},
+		{
+			"value" : "subjectiveNorm",
+			"productGroupAttribute" : "investmentCost",
+			"mappingStrength" : 0.0
+		},
+		{
+			"value" : "subjectiveNorm",
+			"productGroupAttribute" : "simplicity",
+			"mappingStrength" : 0.0
+		},
+		{
+			"value" : "subjectiveNorm",
+			"productGroupAttribute" : "compatibility",
+			"mappingStrength" : 0.0
+		},
+		{
+			"value" : "subjectiveNorm",
+			"productGroupAttribute" : "costEfficiency",
+			"mappingStrength" : 0.0
+		}
+	],
+	"preferenceHomogenizingFactor" : 0.1
+}

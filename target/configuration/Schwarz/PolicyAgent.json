@@ -1,0 +1,7 @@
+{
+	"ConsumerPolicyScheme" : "DefaultConsumerPolicyScheme",
+	"MarketEvaluationScheme" : "DefaultMarketEvaluationScheme", 
+	"ProductPolicyScheme" : "DefaultProductPolicyScheme",
+	"RegulatoryPolicyScheme" : "DefaultRegulatoryPolicyScheme",
+	"informationAuthority" : 1.0
+}

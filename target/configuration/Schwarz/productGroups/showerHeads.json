@@ -1,0 +1,70 @@
+ {
+	"productGroupAttributes" : [
+		{
+			"name" : "environmentalism",
+			"value" : "P1PA1Distribution",
+			"mutability" : false,
+			"observability" : 0.0
+		},
+		{
+			"name" : "simplicity",
+			"value" : "P1PA1Distribution",
+			"mutability" : false,
+			"observability" : 0.0
+		},
+		{
+			"name" : "compatibility",
+			"value" : "P1PA1Distribution",
+			"mutability" : false,
+			"observability" : 0.0
+		},
+		{
+			"name" : "costEfficiency",
+			"value" : "P1PA1Distribution",
+			"mutability" : false,
+			"observability" : 0.0
+		},
+		{
+			"name" : "investmentCost",
+			"value" : "P1PA1Distribution",
+			"mutability" : false,
+			"observability" : 0.0
+		}
+	],
+	"satisfiesNeeds" : [ "showering" ],
+	"prerequisiteProductGroups" : [
+	],
+	"excludedProductGroups" : [
+	],
+	"fixedProducts" : [
+	{
+		"name" : "standardShowerHead",
+		"productAttributes" : [
+		{
+			"value" : 0.0,
+			"correspondingProductGroupAttribute" : "environmentalism"
+		},
+		{
+			"value" : 1.0,
+			"correspondingProductGroupAttribute" : "simplicity"
+		},
+		{
+			"value" : 0.7,
+			"correspondingProductGroupAttribute" : "compatibility"
+		},
+		{
+			"value" : 0.0,
+			"correspondingProductGroupAttribute" : "costEfficiency"
+		},
+		{
+			"value" : 1.0,
+			"correspondingProductGroupAttribute" : "investmentCost"
+		}
+		]
+	}
+	
+	],
+	"productLifetimeDistribution" : "showerLifetimeDistribution",
+	"standardProduct" : "standardShowerHead"
+}
+

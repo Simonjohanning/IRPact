@@ -1,0 +1,5 @@
+{
+	"simulationLength" : 300.0,
+	"timeModel" : "discrete",
+	"synchronousity" : true
+}

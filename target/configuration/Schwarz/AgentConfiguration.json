@@ -1,0 +1,48 @@
+{
+	"posAgents" : [
+	],
+	"noAgentsPerGroup" : {
+		"Postmaterialists" : 2383,
+		"SocialLeaders" : 2383,
+		"Hedonists" : 2383,
+		"Traditionalists" : 2383,
+		"Mainstream" : 2383
+	},
+	"consumerAgentGroupAffinities" : {
+	    "Postmaterialists" : {
+	        "Postmaterialists" : 0.5,
+	        "SocialLeaders" : 0.3,
+	        "Hedonists" : 0.2,
+	        "Traditionalists" : 0.0,
+	        "Mainstream" : 0.0
+	    },
+	    "SocialLeaders" : {
+	        "Postmaterialists" : 0.3,
+	        "SocialLeaders" : 0.5,
+	        "Hedonists" : 0.2,
+	        "Traditionalists" : 0.0,
+	        "Mainstream" : 0.0
+	    },
+	    "Hedonists" : {
+	        "Postmaterialists" : 0.25,
+	        "SocialLeaders" : 0.25,
+	        "Hedonists" : 0.5,
+	        "Traditionalists" : 0.0,
+	        "Mainstream" : 0.0
+	    },
+	    "Traditionalists" : {
+	        "Postmaterialists" : 0.1,
+	        "SocialLeaders" : 0.5,
+	        "Hedonists" : 0.0,
+	        "Traditionalists" : 0.3,
+	        "Mainstream" : 0.1
+	    },
+	    "Mainstream" : {
+	        "Postmaterialists" : 0.1,
+	        "SocialLeaders" : 0.5,
+	        "Hedonists" : 0.0,
+	        "Traditionalists" : 0.1,
+	        "Mainstream" : 0.3
+	    }
+	}
+}
