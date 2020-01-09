@@ -4,7 +4,7 @@ The audience for these release notes are modelers interested in using the innova
 ## Purpose of the Release Notes
 As the first release of the software, these release notes are intended to provide some insight (additional to the documentation in the [public repository](https://github.com/Simonjohanning/IRPact).
 ## License
-IRPopt is published under the [CC-BY-3.0 license](https://creativecommons.org/licenses/by/3.0/legalcode). This means that you can share and adapt if you promise not to put additional restrictions on the software and that you credit us as creators.
+IRPopt is published under the [GNU General Public License](https://www.gnu.org/licenses/quick-guide-gplv3.pdf). This means that you can use the software for any purpose,  share the software with your friends and neighbors, change the software to suit your needs, and share the changes you make.
 ## Compatibility
 The framework should run on any machine that has a decent Java environment setup.
 ## Recommendations for Use
