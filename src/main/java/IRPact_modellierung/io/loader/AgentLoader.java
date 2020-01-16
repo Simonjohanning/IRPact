@@ -4,6 +4,7 @@ import IRPact_modellierung.agents.companyAgents.advertisement.AdvertisementSchem
 import IRPact_modellierung.agents.AgentConfiguration;
 import IRPact_modellierung.agents.companyAgents.*;
 import IRPact_modellierung.agents.consumerAgents.*;
+import IRPact_modellierung.agents.posAgents.POSAgent;
 import IRPact_modellierung.events.MarketIntroductionEventDescription;
 import IRPact_modellierung.perception.*;
 import IRPact_modellierung.agents.policyAgent.*;
@@ -69,7 +70,7 @@ public class AgentLoader {
         for (File file : listOfFiles) {
             if (file.isFile()) {
                 try {
-                    ConsumerAgentGroup correspondingCag = loadConsumerAgentGroup(file, productConfiguration, distributions, allProductGroupAttributes, values, decisionConfiguration);
+                    ConsumerAgentGroup correspondingCag = AgentLoader.loadConsumerAgentGroup(file, productConfiguration, distributions, allProductGroupAttributes, values, decisionConfiguration);
                     values.addAll(correspondingCag.getConsumerAgentGroupPreferences().keySet());
                     consumerAgentGroups.add(correspondingCag);
                 } catch (JsonMappingException jme) {
@@ -85,7 +86,7 @@ public class AgentLoader {
         }
         //load the company agents
         File companyFolder = new File(configPath+"companyAgents");
-        //load all files in the consumerAgentGroups folder
+        //load all files in the company agent folder
         File[] companyAgentFiles = companyFolder.listFiles();
         assert companyAgentFiles != null;
         for (File file : companyAgentFiles) {
@@ -104,6 +105,22 @@ public class AgentLoader {
                 }
             }
         }
+        //set up POS agents
+        HashSet<POSAgentConfiguration> posAgents = new HashSet<>();
+        File posFolder = new File(configPath+"posAgents");
+        //load all files in the pos agent folder
+        File[] posFiles = posFolder.listFiles();
+        assert posFiles != null;
+        for (File file : posFiles) {
+            if (file.isFile()) {
+                try {
+                    POSAgentConfiguration loadedPOSAgent = loadPOSAgentConfiguration(file, productConfiguration, distributions);
+                    posAgents.add(loadedPOSAgent);
+                } catch (Exception e) {
+                    throw e;
+                }
+            }
+        }
         //load the policy agent
         PolicyAgentConfiguration policyAgentConfiguration = loadPolicyAgent(configPath);
         //load general agent configuration
@@ -115,14 +132,6 @@ public class AgentLoader {
             HashMap<String, Object> noAgentsPerAgentGroupJSON = (HashMap<String, Object>) agentConfigurationJSON.get("noAgentsPerGroup");
             for (ConsumerAgentGroup agentGroup : consumerAgentGroups) {
                 noAgentsPerAgentGroup.put(agentGroup, (Integer) noAgentsPerAgentGroupJSON.get(agentGroup.getGroupName()));
-            }
-            //set up POS agents
-            ArrayList<HashMap<String, Object>> posAgentConfigurationJSON = (ArrayList<HashMap<String, Object>>) agentConfigurationJSON.get("posAgents");
-            Set<POSAgentConfiguration> posAgents = new HashSet<POSAgentConfiguration>();
-            try {
-                posAgents = loadPOSAgentConfiguration(posAgentConfigurationJSON, productConfiguration, distributions);
-            } catch (IllegalArgumentException e) {
-                throw e;
             }
             //set up affinities
             HashMap<String, Object> affinitiesJSON = (HashMap<String, Object>) agentConfigurationJSON.get("consumerAgentGroupAffinities");
@@ -768,34 +777,35 @@ public class AgentLoader {
     /**
      * Method to load the configuration of points-of-sale (POS) agents, based on a configuration arraylist
      *
-     * @param posAgentConfiguration The configuration object describing the configuration of the POS agents. ArrayList with one entry for each POS agent, whereas the entries are String-Object hashmaps encoding the configured aspects
+     * @param posAgentConfigurationFile The configuration file describing the configuration of the POS agents.
      * @param productConfiguration The configuration of the products within the simulation
      * @param distributions A map of distributions and their names (as keys) containing at least the distributions the configuration of the POS agents refer to
-     * @return A set of POSAgentConfiguration with each entry corresponding to the configuration of a single POS agent
+     * @return A POSAgentConfiguration corresponding to the configuration of the single POS agent as defined in the respective file
      * @throws IllegalArgumentException
      */
-    private static Set<POSAgentConfiguration> loadPOSAgentConfiguration(ArrayList<HashMap<String, Object>> posAgentConfiguration, ProductConfiguration productConfiguration, Map<String, Distribution> distributions) throws IllegalArgumentException{
-        //return set
-        Set<POSAgentConfiguration> posAgentConfigurationSet = new HashSet<POSAgentConfiguration>(posAgentConfiguration.size());
-        Map<String, ProductGroup> productGroupByKeys;
-        try {
-            productGroupByKeys = StructureEnricher.attachProductGroupNames(productConfiguration.getProductGroups());
-        } catch (IllegalArgumentException e) {
-            throw e;
-        }
-        //configure POS agents one-by-one
-        for(int index=0;index<posAgentConfiguration.size();index++){
-            ArrayList<HashMap<String, Object>> productGroupConfigurationEntry;
-            try {
-                productGroupConfigurationEntry = (ArrayList<HashMap<String, Object>>) posAgentConfiguration.get(index).get("productGroupConfiguration");
-            } catch (ClassCastException cce){
-                throw new IllegalArgumentException("Error loading the productGroupConfiguration of "+index+"th POS agent represented by "+posAgentConfiguration.get(index).toString()+"!!\n"+cce);
-            }
+    private static POSAgentConfiguration loadPOSAgentConfiguration (File posAgentConfigurationFile, ProductConfiguration productConfiguration, Map<String, Distribution> distributions) throws IllegalArgumentException {
+    ObjectMapper mapper = new ObjectMapper();
+    try {
+        HashMap<String, Object> posMap = mapper.readValue(posAgentConfigurationFile, HashMap.class);
+        String[] fileNameArray = posAgentConfigurationFile.getName().split("\\.");
+        if (!posMap.containsKey("productGroupAvailability"))
+            throw new IllegalArgumentException("POS agent " + fileNameArray[0] + " doesn't have a value for the productGroupAvailability!!");
+        else if (!posMap.containsKey("productGroupPriceFactor"))
+            throw new IllegalArgumentException("POS agent " + fileNameArray[0] + " doesn't have a value for the productGroupPriceFactor!!");
+        else if (!posMap.containsKey("spatialDistribution"))
+            throw new IllegalArgumentException("POS agent " + fileNameArray[0] + " doesn't have a value for the spatialDistribution!!");
+        else if (!posMap.containsKey("informationAuthority"))
+            throw new IllegalArgumentException("POS agent " + fileNameArray[0] + " doesn't have a value for the informationAuthority!!");
+        else if (!posMap.containsKey("PurchaseProcessSchemeIdentifier"))
+            throw new IllegalArgumentException("POS agent " + fileNameArray[0] + " doesn't have a value for the PurchaseProcessSchemeIdentifier!!");
+        else {
+            Map<String, ProductGroup> productGroupByKeys = StructureEnricher.attachProductGroupNames(productConfiguration.getProductGroups());
+            ArrayList<HashMap<String, Object>> productGroupConfigurationEntry = (ArrayList<HashMap<String, Object>>) posMap.get("productGroupConfiguration");
             Map<ProductGroup, BooleanDistribution> productGroupAvailability = new HashMap<ProductGroup, BooleanDistribution>(productConfiguration.getProductGroups().size());
             Map<ProductGroup, UnivariateDistribution> productGroupPriceFactor = new HashMap<ProductGroup, UnivariateDistribution>(productConfiguration.getProductGroups().size());
             //configure the different productGroup entries for the current POS agent
             for (HashMap<String, Object> aProductGroupConfigurationEntry : productGroupConfigurationEntry) {
-                fooLog.debug("Configuring POSagent {} for product group {}\nkey is {}, value is {}, availability {}, keyset {}", (String) posAgentConfiguration.get(index).get("name"), productGroupByKeys.get((String) aProductGroupConfigurationEntry.get("productGroup")), productGroupByKeys.get((String) aProductGroupConfigurationEntry.get("productGroup")), (BooleanDistribution) distributions.get((String) aProductGroupConfigurationEntry.get("availability")), (String) aProductGroupConfigurationEntry.get("availability"), distributions.keySet());
+                fooLog.debug("Configuring POSagent {} for product group {}\nkey is {}, value is {}, availability {}, keyset {}", (String) posMap.get("name"), productGroupByKeys.get((String) aProductGroupConfigurationEntry.get("productGroup")), productGroupByKeys.get((String) aProductGroupConfigurationEntry.get("productGroup")), (BooleanDistribution) distributions.get((String) aProductGroupConfigurationEntry.get("availability")), (String) aProductGroupConfigurationEntry.get("availability"), distributions.keySet());
                 if (!productGroupByKeys.containsKey(aProductGroupConfigurationEntry.get("productGroup")))
                     throw new IllegalArgumentException("Product group " + aProductGroupConfigurationEntry.get("productGroup") + " used by POS configuration is not a valid product group (not contained in the list of product groups");
                 else if (!aProductGroupConfigurationEntry.containsKey("availability"))
@@ -805,26 +815,32 @@ public class AgentLoader {
                 else if (!aProductGroupConfigurationEntry.containsKey("productGroupPriceFactor"))
                     throw new IllegalArgumentException("productGroupPriceFactor has not been configured for product group " + aProductGroupConfigurationEntry + "!!");
                 else if (!distributions.containsKey(aProductGroupConfigurationEntry.get("productGroupPriceFactor")))
-                    throw new IllegalArgumentException("Distribution " + aProductGroupConfigurationEntry.get("productGroupPriceFactor") + " referrred to in the POS agent configuration does not exist. Please make sure it is configured correctly!!");
+                    throw new IllegalArgumentException("Distribution " + aProductGroupConfigurationEntry.get("productGroupPriceFactor") + " referred to in the POS agent configuration does not exist. Please make sure it is configured correctly!!");
                 else {
                     productGroupAvailability.put(productGroupByKeys.get((String) aProductGroupConfigurationEntry.get("productGroup")), (BooleanDistribution) distributions.get((String) aProductGroupConfigurationEntry.get("availability")));
                     productGroupPriceFactor.put(productGroupByKeys.get((String) aProductGroupConfigurationEntry.get("productGroup")), (UnivariateDistribution) distributions.get((String) aProductGroupConfigurationEntry.get("productGroupPriceFactor")));
                 }
             }
             //fooLog.info("SpatialDistribution in config: {} with key {}", (SpatialDistribution) distributions.get((String) posAgentConfigurationJSON.get(index).get("spatialDistribution")), (String) posAgentConfigurationJSON.get(index).get("spatialDistribution"));
-            if(!posAgentConfiguration.get(index).containsKey("spatialDistribution")) throw new IllegalArgumentException("No spatial distribution was configured for the current POS agent!! Make sure the configuration is complete!!");
-            else if(!distributions.containsKey(posAgentConfiguration.get(index).get("spatialDistribution"))) throw new IllegalArgumentException("Spatial distribution "+posAgentConfiguration.get(index).get("spatialDistribution")+" configured for the current POS agent is not a valid distribution!! Please make sure you configured it correctly!!");
-            else if(!posAgentConfiguration.get(index).containsKey("name")) throw new IllegalArgumentException("No name has been configured for the current POS agent!! Make sure the configuration is complete!!");
+            if (!posMap.containsKey("spatialDistribution"))
+                throw new IllegalArgumentException("No spatial distribution was configured for the current POS agent!! Make sure the configuration is complete!!");
+            else if (!distributions.containsKey(posMap.get("spatialDistribution")))
+                throw new IllegalArgumentException("Spatial distribution " + posMap.get("spatialDistribution") + " configured for the current POS agent is not a valid distribution!! Please make sure you configured it correctly!!");
+            else if (!posMap.containsKey("name"))
+                throw new IllegalArgumentException("No name has been configured for the current POS agent!! Make sure the configuration is complete!!");
             double informationAuthority;
-            if(!posAgentConfiguration.get(index).containsKey("informationAuthority")) throw new IllegalArgumentException("Configuration of pos agent "+index+" errornous!!\n No informationAuthority set!");
-            else informationAuthority = (Double) posAgentConfiguration.get(index).get("informationAuthority");
+            if (!posMap.containsKey("informationAuthority"))
+                throw new IllegalArgumentException("Configuration of pos agent " + posMap.get("name") + " errornous!!\n No informationAuthority set!");
+            else informationAuthority = (Double) posMap.get("informationAuthority");
             String purchaseProcessIdentifier;
-            if(!posAgentConfiguration.get(index).containsKey("purchaseProcessIdentifier")) throw new IllegalArgumentException("Configuration of pos agent "+index+" errornous!!\n No purchaseProcessIdentifier set!");
-            else purchaseProcessIdentifier = (String) posAgentConfiguration.get(index).get("purchaseProcessIdentifier");
-            posAgentConfigurationSet.add(new POSAgentConfiguration(productGroupAvailability, productGroupPriceFactor, (SpatialDistribution) distributions.get((String) posAgentConfiguration.get(index).get("spatialDistribution")), (String) posAgentConfiguration.get(index).get("name"), informationAuthority, purchaseProcessIdentifier));
+            if (!posMap.containsKey("purchaseProcessIdentifier"))
+                throw new IllegalArgumentException("Configuration of pos agent " + posMap.get("name") + " errornous!!\n No purchaseProcessIdentifier set!");
+            else purchaseProcessIdentifier = (String) posMap.get("purchaseProcessIdentifier");
+            return new POSAgentConfiguration(productGroupAvailability, productGroupPriceFactor, (SpatialDistribution) distributions.get((String) posMap.get("spatialDistribution")), (String) posMap.get("name"), informationAuthority, purchaseProcessIdentifier);
         }
-        return posAgentConfigurationSet;
     }
-
-
+    catch (IllegalArgumentException iae){}
+    catch (Exception e){}
+    return null;
+    }
 }
