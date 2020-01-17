@@ -10,7 +10,7 @@ import java.io.IOException;
 public class SimulationManager {
 
     private static final org.apache.logging.log4j.Logger LOG = LogManager.getLogger("debugConsoleLogger");
-    private static final String CONFIGPATHPREFIX = "../configuration/";
+    private static final String CONFIGPATHPREFIX = "./target/configuration/";
     private static final String CONFIGPATH = "Schwarz";
 
     public static void main(String[] args){

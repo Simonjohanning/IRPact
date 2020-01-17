@@ -123,6 +123,7 @@ public class ConfigLoader {
     private static Set<Distribution> loadDistributions(String configPath) throws ClassCastException, IOException{
         ObjectMapper mapper = new ObjectMapper();
         try {
+            System.out.println(configPath);
             HashMap<String, Object>[] distributionMap = mapper.readValue(new File(configPath+"Distributions.json"), HashMap[].class);
             Set<Distribution> returnSet = new HashSet<Distribution>(distributionMap.length);
             for (HashMap<String, Object> aDistributionMap : distributionMap) {

@@ -1,0 +1,22 @@
+{
+  "productGroupConfiguration": [
+    {
+      "productGroup": "rainwaterUsageSystems",
+      "availability": "uniformlyTrue",
+      "productGroupPriceFactor": "diracDistribution1"
+    },
+    {
+      "productGroup": "showerHeads",
+      "availability": "uniformlyTrue",
+      "productGroupPriceFactor": "diracDistribution1"
+    },
+    {
+      "productGroup": "toiletFlushs",
+      "availability": "uniformlyTrue",
+      "productGroupPriceFactor": "diracDistribution1",
+    }
+  ],
+  "spatialDistribution": "dummySpatialDistribution",
+  "informationAuthority": 1.0,
+  "PurchaseProcessSchemeIdentifier": "standardPuPS"
+}

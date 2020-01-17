@@ -7,7 +7,7 @@ import IRPact_modellierung.simulation.Configuration;
 /**
  * A PerceptionInitializationScheme describes how the (initial) perception of a ProductAttribute is derived.
  * As part of a PerceptionSchemeConfiguration, it describes the initial parameterization of the respetive
- * ProductAttributePerceptionSchemes.
+ * ProductAttributePerceptionSchemes (e.g. formalizing the perceived product group attribute value distribution).
  *
  * @author Simon Johanning
  */

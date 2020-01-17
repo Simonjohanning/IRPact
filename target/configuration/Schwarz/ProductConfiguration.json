@@ -1,0 +1,72 @@
+{
+	"noProductsPerGroup" : {
+		"showerHeads" : 0,
+		"rainwaterUsageSystems" : 0,
+		"toiletFlushs" : 0
+	},
+	"marketIntroductionEvents" : [		
+	{
+		"name" : "waterSaveShowerHead",
+		"partOfProductGroup" : "showerHeads",
+		"scheduledForTime" : 120.0,
+		"productAttributes" : [
+			{
+				"value" : 0.85,
+				"correspondingProductGroupAttribute" : "environmentalism"
+			},
+			{
+				"value" : 0.75,
+				"correspondingProductGroupAttribute" : "simplicity"
+			},
+			{
+				"value" : 0.7,
+				"correspondingProductGroupAttribute" : "compatibility"
+			},
+			{
+				"value" : 0.5,
+				"correspondingProductGroupAttribute" : "costEfficiency"
+			},
+			{
+				"value" : 0.8,
+				"correspondingProductGroupAttribute" : "investmentCost"
+			}
+		],
+		"productLifetimeDistribution" : "defaultProductLifetimeDistribution"
+	},
+	{
+		"name" : "twoCompartmentFlush",
+		"partOfProductGroup" : "toiletFlushs",
+		"scheduledForTime" : 192.0,
+		"productAttributes" : [
+			{
+				"value" : 0.85,
+				"correspondingProductGroupAttribute" : "environmentalism"
+			},
+			{
+				"value" : 0.75,
+				"correspondingProductGroupAttribute" : "simplicity"
+			},
+			{
+				"value" : 0.45,
+				"correspondingProductGroupAttribute" : "compatibility"
+			},
+			{
+				"value" : 0.5,
+				"correspondingProductGroupAttribute" : "costEfficiency"
+			},
+			{
+				"value" : 0.6,
+				"correspondingProductGroupAttribute" : "investmentCost"
+			}
+		],
+		"productLifetimeDistribution" : "defaultProductLifetimeDistribution"
+	}
+	],
+	"productDiscontinuationEvents" : [
+		{
+			"name" : "pressureFlush",
+			"scheduledForTime" : 0.0
+		}
+	]
+
+}

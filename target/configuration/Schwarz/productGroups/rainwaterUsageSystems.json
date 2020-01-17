@@ -1,0 +1,95 @@
+ {
+	"productGroupAttributes" : [
+		{
+			"name" : "environmentalism",
+			"value" : "P1PA1Distribution",
+			"mutability" : false,
+			"observability" : 0.0
+		},
+		{
+			"name" : "simplicity",
+			"value" : "P1PA1Distribution",
+			"mutability" : false,
+			"observability" : 0.0
+		},
+		{
+			"name" : "compatibility",
+			"value" : "P1PA1Distribution",
+			"mutability" : false,
+			"observability" : 0.0
+		},
+		{
+			"name" : "costEfficiency",
+			"value" : "P1PA1Distribution",
+			"mutability" : false,
+			"observability" : 0.0
+		},
+		{
+			"name" : "investmentCost",
+			"value" : "P1PA1Distribution",
+			"mutability" : false,
+			"observability" : 0.0
+		}
+	],
+	"satisfiesNeeds" : [ "rainwaterUsage" ],
+	"prerequisiteProductGroups" : [
+	],
+	"excludedProductGroups" : [
+	],
+	"fixedProducts" : [
+	{
+		"name" : "noRainwaterUsage",
+		"productAttributes" : [
+		{
+			"value" : 0.0,
+			"correspondingProductGroupAttribute" : "environmentalism"
+		},
+		{
+			"value" : 0.6,
+			"correspondingProductGroupAttribute" : "simplicity"
+		},
+		{
+			"value" : 0.3,
+			"correspondingProductGroupAttribute" : "compatibility"
+		},
+		{
+			"value" : 0.0,
+			"correspondingProductGroupAttribute" : "costEfficiency"
+		},
+		{
+			"value" : 1.0,
+			"correspondingProductGroupAttribute" : "investmentCost"
+		}
+		]
+	},
+	{
+		"name" : "rainwaterUsage",
+		"productAttributes" : [
+		{
+			"value" : 0.85,
+			"correspondingProductGroupAttribute" : "environmentalism"
+		},
+		{
+			"value" : 0.6,
+			"correspondingProductGroupAttribute" : "simplicity"
+		},
+		{
+			"value" : 0.3,
+			"correspondingProductGroupAttribute" : "compatibility"
+		},
+		{
+			"value" : 0.7,
+			"correspondingProductGroupAttribute" : "costEfficiency"
+		},
+		{
+			"value" : 0.5,
+			"correspondingProductGroupAttribute" : "investmentCost"
+		}
+		]
+	}
+	],
+	"productLifetimeDistribution" : "rainwaterLifetimeDistribution",
+	"standardProduct" : "noRainwaterUsage",
+	"overwriteDecisionProcess" : "DeliberativeDecision"
+}
+
