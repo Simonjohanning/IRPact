@@ -2,7 +2,6 @@ package IRPact_modellierung.network;
 
 import IRPact_modellierung.helper.LazynessHelper;
 import IRPact_modellierung.simulation.SimulationContainer;
-import org.omg.PortableServer.THREAD_POLICY_ID;
 
 import java.util.HashMap;
 import java.util.HashSet;
