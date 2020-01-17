@@ -1,6 +1,0 @@
-{
-	"spatialModel" : "CenteredUnitSquareSpatialModel",
-	"parameters" : {
-		"metric" : "euclideanMetric"
-	}
-}
