@@ -13,10 +13,11 @@
     {
       "productGroup": "toiletFlushs",
       "availability": "uniformlyTrue",
-      "productGroupPriceFactor": "diracDistribution1",
+      "productGroupPriceFactor": "diracDistribution1"
     }
   ],
+  "name": "TheMightyAlienDwarf",
   "spatialDistribution": "dummySpatialDistribution",
   "informationAuthority": 1.0,
-  "PurchaseProcessSchemeIdentifier": "standardPuPS"
+  "PurchaseProcessSchemeIdentifier": "TrivialPurchaseProcessScheme"
 }

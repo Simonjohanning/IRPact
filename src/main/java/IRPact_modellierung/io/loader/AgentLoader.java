@@ -121,6 +121,7 @@ public class AgentLoader {
                 }
             }
         }
+
         //load the policy agent
         PolicyAgentConfiguration policyAgentConfiguration = loadPolicyAgent(configPath);
         //load general agent configuration
@@ -788,10 +789,15 @@ public class AgentLoader {
     try {
         HashMap<String, Object> posMap = mapper.readValue(posAgentConfigurationFile, HashMap.class);
         String[] fileNameArray = posAgentConfigurationFile.getName().split("\\.");
-        if (!posMap.containsKey("productGroupAvailability"))
-            throw new IllegalArgumentException("POS agent " + fileNameArray[0] + " doesn't have a value for the productGroupAvailability!!");
-        else if (!posMap.containsKey("productGroupPriceFactor"))
-            throw new IllegalArgumentException("POS agent " + fileNameArray[0] + " doesn't have a value for the productGroupPriceFactor!!");
+        //TODO wird in den productGroupConfiguration verwendet
+        //if (!posMap.containsKey("productGroupAvailability"))
+        //    throw new IllegalArgumentException("POS agent " + fileNameArray[0] + " doesn't have a value for the productGroupAvailability!!");
+        //TODO productGroupConfiguration hinzugefuegt
+        if (!posMap.containsKey("productGroupConfiguration"))
+            throw new IllegalArgumentException("POS agent " + fileNameArray[0] + " doesn't have a value for the productGroupConfiguration!!");
+        //TODO wird in den productGroupConfiguration verwendet
+        //else if (!posMap.containsKey("productGroupPriceFactor"))
+        //    throw new IllegalArgumentException("POS agent " + fileNameArray[0] + " doesn't have a value for the productGroupPriceFactor!!");
         else if (!posMap.containsKey("spatialDistribution"))
             throw new IllegalArgumentException("POS agent " + fileNameArray[0] + " doesn't have a value for the spatialDistribution!!");
         else if (!posMap.containsKey("informationAuthority"))
@@ -832,15 +838,21 @@ public class AgentLoader {
             if (!posMap.containsKey("informationAuthority"))
                 throw new IllegalArgumentException("Configuration of pos agent " + posMap.get("name") + " errornous!!\n No informationAuthority set!");
             else informationAuthority = (Double) posMap.get("informationAuthority");
-            String purchaseProcessIdentifier;
-            if (!posMap.containsKey("purchaseProcessIdentifier"))
-                throw new IllegalArgumentException("Configuration of pos agent " + posMap.get("name") + " errornous!!\n No purchaseProcessIdentifier set!");
-            else purchaseProcessIdentifier = (String) posMap.get("purchaseProcessIdentifier");
-            return new POSAgentConfiguration(productGroupAvailability, productGroupPriceFactor, (SpatialDistribution) distributions.get((String) posMap.get("spatialDistribution")), (String) posMap.get("name"), informationAuthority, purchaseProcessIdentifier);
+            String purchaseProcessSchemeIdentifier;
+            if (!posMap.containsKey("PurchaseProcessSchemeIdentifier"))
+                throw new IllegalArgumentException("Configuration of pos agent " + posMap.get("name") + " errornous!!\n No PurchaseProcessSchemeIdentifier set!");
+            else purchaseProcessSchemeIdentifier = (String) posMap.get("PurchaseProcessSchemeIdentifier");
+            return new POSAgentConfiguration(productGroupAvailability, productGroupPriceFactor, (SpatialDistribution) distributions.get((String) posMap.get("spatialDistribution")), (String) posMap.get("name"), informationAuthority, purchaseProcessSchemeIdentifier);
         }
     }
-    catch (IllegalArgumentException iae){}
-    catch (Exception e){}
-    return null;
+    catch (IllegalArgumentException iae){
+        //DUMMY
+        throw new RuntimeException("total doofe IllegalArgumentException", iae);
+    }
+    catch (Exception e){
+        //DUMMY
+        throw new RuntimeException("total doofe Exception", e);
+    }
+    //return null;
     }
 }
