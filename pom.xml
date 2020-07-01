@@ -13,7 +13,7 @@
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <jadex.version>3.0.0-RC30</jadex.version>
-    <jackson.version>2.9.10.1</jackson.version>
+    <jackson.version>2.9.10.5</jackson.version>
     <maven.compiler.source>1.8</maven.compiler.source>
     <maven.compiler.target>1.8</maven.compiler.target>
   </properties>
